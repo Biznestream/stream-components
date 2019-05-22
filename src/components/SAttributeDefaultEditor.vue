@@ -11,7 +11,7 @@
         </template>
         <template v-else>
 
-            <div class="error">No editor for type: {{type}}</div>
+            <div class="error--text">No editor for type: {{type}}</div>
 
         </template>
 
@@ -19,9 +19,6 @@
 
 </template>
 <style lang="scss" scoped>
-    .error {
-        color: red;
-    }
 </style>
 <script>
 import { Vue, Prop, Model, Component } from 'vue-property-decorator';
