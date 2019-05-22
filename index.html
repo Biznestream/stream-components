@@ -6,14 +6,24 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Component Playground</title>
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
 </head>
 <body>
 
-    <div id="app">
+    <v-app id="app">
 
-        <example-component v-model="test"></example-component>
+        <div class="container">
 
-    </div>
+        <s-attribute-type-selector v-model="attribute.dataType"></s-attribute-type-selector>
+
+        <s-attribute-default-editor required :type="attribute.dataType" v-model="attribute.default"></s-attribute-default-editor>
+
+
+            Default value: {{attribute.default}}
+
+        </div>
+    </v-app>
 
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="node_modules/vuex/dist/vuex.js"></script>
@@ -30,7 +40,9 @@
         var app = new Vue({
             el: '#app',
             data: {
-                test: '1'
+                test: '1',
+
+                attribute: { dataType: 'short-text', default: 'Test' }
             }
         });
     </script>

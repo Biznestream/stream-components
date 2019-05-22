@@ -1,13 +1,19 @@
 import Vue from 'vue';
+import Vuetify from 'vuetify';
 
-import ExampleComponent from './components/ExampleComponent';
+import SAttributeTypeSelector from './components/SAttributeTypeSelector';
+import SAttributeDefaultEditor from './components/SAttributeDefaultEditor';
 
 export {
-  ExampleComponent
+  SAttributeTypeSelector,
+  SAttributeDefaultEditor
 };
 
 export default function install(Vue) {
-  Vue.component('ExampleComponent', ExampleComponent);
+  Vue.use(Vuetify);
+
+  Vue.component('SAttributeTypeSelector', SAttributeTypeSelector);
+  Vue.component('SAttributeDefaultEditor', SAttributeDefaultEditor);
 }
 install.version = '__VERSION__';
 
