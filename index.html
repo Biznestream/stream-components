@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Component Playground</title>
+</head>
+<body>
+
+    <div id="app">
+
+        <example-component v-model="test"></example-component>
+
+    </div>
+
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="node_modules/vuex/dist/vuex.js"></script>
+    <script src="node_modules/vue-class-component/dist/vue-class-component.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/almond@0.3.3/almond.min.js"></script>
+    <script>
+        var module = {};
+        define('vue', function () { return Vue; });
+        define('vuex', function () { return Vuex; });
+        define('vue-class-component', function () { return VueClassComponent; });
+    </script>
+    <script src="index.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                test: '1'
+            }
+        });
+    </script>
+</body>
+</html>
