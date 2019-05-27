@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify';
-
 import SAttributeTypeSelector from './components/SAttributeTypeSelector';
 import SAttributeDefaultEditor from './components/SAttributeDefaultEditor';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 export {
   SAttributeTypeSelector,
@@ -11,6 +11,7 @@ export {
 
 export default function install(Vue) {
   Vue.use(Vuetify);
+  Vue.use(CKEditor);
 
   Vue.component('SAttributeTypeSelector', SAttributeTypeSelector);
   Vue.component('SAttributeDefaultEditor', SAttributeDefaultEditor);

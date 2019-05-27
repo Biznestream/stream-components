@@ -15,27 +15,32 @@
     "@babel/plugin-proposal-decorators": "^7.3.0",
     "babel-loader": "^8.0.5",
     "css-loader": "^2.1.0",
+    "lodash": "^4.17.11",
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
     "nuxt-class-component": "^1.2.1",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
+    "url-loader": "^1.1.2",
     "vue": "^2.6.8",
     "vue-loader": "^15.6.4",
     "vue-property-decorator": "^7.3.0",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.5.21",
+    "vuedraggable": "^2.19.2",
     "vuex": "^3.1.0",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
-    "webpack-plugin-replace": "^1.2.0",
-    "webpack-dev-server": "^3.2.1"
+    "webpack-dev-server": "^3.2.1",
+    "webpack-plugin-replace": "^1.2.0"
   },
   "scripts": {
     "dev": "webpack-dev-server",
     "build": "NODE_ENV=production webpack"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^12.1.0",
+    "@ckeditor/ckeditor5-vue": "^1.0.0-beta.2",
     "vuetify": "^1.5.14"
   }
 }

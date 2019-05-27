@@ -17,10 +17,15 @@
 
         <s-attribute-type-selector v-model="attribute.dataType"></s-attribute-type-selector>
 
-        <s-attribute-default-editor required :type="attribute.dataType" v-model="attribute.default"></s-attribute-default-editor>
+        <s-attribute-default-editor
+                required
+                :type="attribute.dataType"
+                v-model="attribute.default"
+        >
+        </s-attribute-default-editor>
 
-
-            Default value: {{attribute.default}}
+            <div>Default value: {{attribute.default}} {{typeof attribute.default}}</div>
+            <div>Default dataType: {{attribute.dataType}}</div>
 
         </div>
     </v-app>
@@ -41,7 +46,6 @@
             el: '#app',
             data: {
                 test: '1',
-
                 attribute: { dataType: 'short-text', default: 'Test' }
             }
         });
