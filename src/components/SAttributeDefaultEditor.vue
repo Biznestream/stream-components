@@ -55,12 +55,13 @@
                         <v-flex>
                             <v-checkbox
                                     @change="changeHandler(index, $event)"
+                                    :value="item.checked"
                                     v-if="type === DataTypes.MULTISELECT_TYPE">
                             </v-checkbox>
-                            <v-radio-group v-model="radios" :mandatory="false" v-else>
+                            <v-radio-group v-model="selectedItemIndex" :mandatory="false" v-else>
                                 <v-radio
                                         color="info"
-                                        :value="item.title"
+                                        :value="index"
                                         @change="changeHandler(index, $event)"
                                 >
                                 </v-radio>
@@ -238,10 +239,6 @@
             };
         }
 
-        mounted(){
-            console.log(this.value);
-        }
-
         numberValidation(message = 'You can enter only integers') {
             return v => v.indexOf('.') > -1 ? message : false
         }
@@ -249,6 +246,10 @@
         urlValidation(message = 'You can enter only URL') {
             const reg = /^(ftp|http|https):\/\/[^ "]+$/;
             return v => reg.test(v) || message
+        }
+
+        get selectedItemIndex(){
+            return this.value.findIndex(item => item.checked);
         }
 
         get attributeItems() {
@@ -308,7 +309,6 @@
         }
 
         onEditorInput(event) {
-            console.log(event);
             this.$emit('input', event);
             this.value.length > 0 ? this.valid = true : this.valid = false;
         }
@@ -329,7 +329,8 @@
 
         onFileChange($event) {
             const files = $event.target.files || $event.dataTransfer.files;
-            this.$emit('input', ...files);
+            console.log(files);
+            this.$emit('input', [...files]);
         }
     }
 </script>
