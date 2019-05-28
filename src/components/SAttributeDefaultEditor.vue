@@ -25,6 +25,7 @@
                     :editor="editor"
                     :value="value"
                     @blur="onEditorBlur"
+                    @ready="onEditorReady"
                     @input="onEditorInput($event)"
             ></ckeditor>
             <div v-if="!valid" class="v-messages theme--light error--text mb-1 mt-1">
@@ -82,7 +83,7 @@
                         <v-text-field
                                 v-model="name"
                                 :rules="required ? [emptyValidation()] : []"
-                                label="Name"
+                                label="Item"
                                 required
                         ></v-text-field>
                     </v-container>
@@ -166,9 +167,9 @@
         <template v-else-if="type === DataTypes.SWITCH_TYPE">
 
             <v-switch
-                    v-model="switchItem"
-                    :label="`Selected: ${switchItem.toString()}`"
-                    @change="$emit('input', $event)"
+                    :value="value"
+                    @change="switchHandler($event)"
+                    :label="`Selected: ${value.toString()}`"
             ></v-switch>
 
         </template>
@@ -186,7 +187,7 @@
 
         <template v-else-if="type === DataTypes.SEPARATOR_TYPE">
 
-            <h1>Separator</h1>
+            <hr>
 
         </template>
 
@@ -206,7 +207,7 @@
     }
 </style>
 <script>
-    import {Vue, Prop, Model, Component} from 'vue-property-decorator';
+    import {Vue, Prop, Model, Watch, Component} from 'vue-property-decorator';
     import * as DataTypes from '../constants';
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     import draggable from 'vuedraggable';
@@ -232,11 +233,32 @@
                 date: '',
                 array: [],
                 menu: false,
-                radios: '',
                 modal: false,
                 switchItem: true,
                 valid: false
             };
+        }
+
+        @Watch('type')
+        trackValue(newVal, oldVal){
+            let str = '<hr>';
+            if(newVal === 'separator'){
+                this.$emit('input', str)
+            }
+            if(newVal === 'switch' && typeof this.value !== 'boolean'){
+                this.$emit('input', false)
+            }
+        }
+
+        /*@Watch('switchItem')
+        switchValue(newVal, oldVal){
+            console.log(newVal);
+            this.$emit('input', newVal);
+        }*/
+
+        switchHandler(event){
+            console.log(event);
+            this.$emit('input', event)
         }
 
         numberValidation(message = 'You can enter only integers') {
@@ -293,10 +315,10 @@
             this.$emit('input', [...this.array]);
         }
 
-        changeHandler(index, event) {
+        changeHandler(index) {
             if (this.type === DataTypes.MULTISELECT_TYPE) {
-                this.array[index].checked = event;
-                this.$emit('input', [...this.array])
+                this.array[index].checked = !this.array[index].checked;
+                this.$emit('input', [...this.array]);
             } else {
                 this.array.forEach((elem, idx) => elem.checked = idx == index);
                 this.array[index].checked = true;
@@ -308,9 +330,13 @@
             this.value.length > 0 ? this.valid = true : this.valid = false;
         }
 
+        onEditorReady(){
+            this.value.length > 0 ? this.valid = true : this.valid = false;
+        }
+
         onEditorInput(event) {
             this.$emit('input', event);
-            this.value.length > 0 ? this.valid = true : this.valid = false;
+            !event ? this.valid = false : this.valid = true
         }
 
         cancel() {

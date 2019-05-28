@@ -3,29 +3,56 @@
     <div>
         <template v-if="type === DataTypes.SHORTTEXT_TYPE">
 
-            <h1>{{value}}</h1>
+            <v-text-field
+                    :value="value"
+                    :placeholder="defaultValue"
+                    :rules="required ? [emptyValidation()] : []"
+                    label="Short text"
+                    @input="$emit('input', $event)"
+                    required
+            ></v-text-field>
 
         </template>
 
         <template v-if="type === DataTypes.PARAGRAPH_TYPE">
 
-            <p>{{value}}</p>
+            <v-textarea
+                    :value="value"
+                    :placeholder="defaultValue"
+                    :rules="required ? [emptyValidation()] : []"
+                    label="Paragraph"
+                    @input="$emit('input', $event)"
+                    required
+            ></v-textarea>
 
         </template>
 
         <template v-else-if="type === DataTypes.RICHTEXT_TYPE">
 
-            <div v-html="value"></div>
+            <ckeditor
+                    :editor="editor"
+                    :value="defaultValue"
+                    @blur="onEditorBlur"
+                    @ready="onEditorReady"
+                    @input="onEditorInput($event)"
+                    v-model="editorData"
+            ></ckeditor>
+            <div v-if="!valid" class="v-messages theme--light error--text mb-1 mt-1">
+                <div class="v-messages__wrapper">
+                    <div class="v-messages__message">This field is required</div>
+                </div>
+            </div>
 
         </template>
 
         <template v-else-if="type === DataTypes.MULTISELECT_TYPE">
 
             <v-layout row wrap>
-                <v-flex xs1 v-for="item in value || []">
+                <v-flex xs1 v-for="(item, index) in defaultValue || []">
                     <v-checkbox
                             :label="item.title"
                             :value="item.checked"
+                            @change="changeHandler(index)"
                     >
                     </v-checkbox>
                 </v-flex>
@@ -47,9 +74,64 @@
 
         </template>
 
-        <template v-else-if="type === DataTypes.DATETIME_TYPE || type === DataTypes.NUMBER_TYPE || type === DataTypes.DECIMAL_TYPE">
+        <template v-else-if="type === DataTypes.DATETIME_TYPE">
 
-            <div>{{value}}</div>
+            <v-layout row wrap>
+                <v-flex xs11 sm5>
+                    <v-menu
+                            lazy
+                            :close-on-content-click="false"
+                            v-model="menu"
+                            transition="scale-transition"
+                            offset-y
+                            full-width
+                            :nudge-right="40"
+                            max-width="290px"
+                            min-width="290px"
+                    >
+                        <v-text-field
+                                slot="activator"
+                                label="Picker in menu"
+                                prepend-icon="event"
+                                readonly
+                                :value="value"
+                        ></v-text-field>
+                        <v-date-picker v-model="date" no-title scrollable actions>
+                            <template>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
+                                    <v-btn flat color="primary" @click="save">OK</v-btn>
+                                </v-card-actions>
+                            </template>
+                        </v-date-picker>
+                    </v-menu>
+                </v-flex>
+            </v-layout>
+
+        </template>
+
+        <template v-else-if="type === DataTypes.NUMBER_TYPE">
+
+            <v-text-field
+                    label="Integer"
+                    type="number"
+                    @input="$emit('input', $event)"
+                    :rules="required ? [emptyValidation() && numberValidation()] : []"
+                    :value="value"
+            ></v-text-field>
+
+        </template>
+
+        <template v-else-if="type === DataTypes.DECIMAL_TYPE">
+
+            <v-text-field
+                    label="Integer"
+                    type="number"
+                    @input="$emit('input', $event)"
+                    :rules="required ? [emptyValidation()] : []"
+                    :value="value"
+            ></v-text-field>
 
         </template>
 
@@ -57,11 +139,21 @@
 
             <div v-html="link"></div>
 
+            <v-text-field
+                    :rules="required ? [emptyValidation() && urlValidation()] : []"
+                    @input="$emit('input', $event)"
+                    :value="value"
+            ></v-text-field>
+
         </template>
 
         <template v-else-if="type === DataTypes.SWITCH_TYPE">
 
-            <div>{{value}}</div>
+            <v-switch
+                    :value="value"
+                    :label="`Selected: ${value.toString()}`"
+                    @change="switchHandler($event)"
+            ></v-switch>
 
         </template>
 
@@ -71,13 +163,20 @@
 
         </template>
 
+        <template v-else-if="type === DataTypes.SEPARATOR_TYPE">
+
+            <div v-html="value"></div>
+
+        </template>
+
     </div>
 
 </template>
 
 <script>
-    import {Vue, Prop, Component} from 'vue-property-decorator';
+    import {Vue, Prop, Model, Component} from 'vue-property-decorator';
     import moment from 'moment';
+    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     import * as DataTypes from '../constants';
 
     export default @Component({
@@ -90,21 +189,55 @@
     })
 
     class SAttributeDefault extends Vue {
+        @Model('input') value;
         @Prop(String) type;
-        @Prop() value;
+        @Prop(Boolean) required;
+        @Prop() defaultValue;
 
         data () {
             return {
-                DataTypes
+                DataTypes,
+                date: '',
+                switchItem: true,
+                editor: ClassicEditor,
+                menu: false,
+                valid: false
             }
+        }
+
+        onEditorBlur() {
+            this.value.length > 0 ? this.valid = true : this.valid = false;
+        }
+
+        onEditorReady(){
+            this.value.length > 0 ? this.valid = true : this.valid = false;
+        }
+
+        get editorData(){
+            return this.defaultValue
+        }
+
+        onEditorInput(event){
+            this.$emit('input', event);
+            !event ? this.valid = false : this.valid = true
+        }
+
+        switchHandler(event){
+            this.$emit('input', event)
+        }
+
+        changeHandler(index){
+            let array = [...this.defaultValue];
+            array[index].checked = !array[index].checked;
+            this.$emit('input', [...array]);
         }
 
         get transformData(){
             let selected;
             let array;
-            if(typeof this.value === "object"){
-                array = this.value.map(item => item.title);
-                selected = this.value.filter(item => item.checked === true);
+            if(typeof this.defaultValue === "object"){
+                array = this.defaultValue.map(item => item.title);
+                selected = this.defaultValue.filter(item => item.checked === true);
                 selected.length > 0 ? selected = selected[0].title : selected = 'Select default value'
             }
             return {
@@ -115,6 +248,29 @@
 
         get link(){
             return `<a target="_blank" href="${this.value}">${this.value}</a>`;
+        }
+
+        emptyValidation(message = 'This field is required.') {
+            return v => !!v || message;
+        }
+
+        cancel() {
+            this.date = '';
+            this.menu = false;
+        }
+
+        save() {
+            this.menu = false;
+            this.$emit('input', this.date);
+        }
+
+        urlValidation(message = 'You can enter only URL') {
+            const reg = /^(ftp|http|https):\/\/[^ "]+$/;
+            return v => reg.test(v) || message
+        }
+
+        numberValidation(message = 'You can enter only integers') {
+            return v => v.indexOf('.') > -1 ? message : false
         }
     }
 
