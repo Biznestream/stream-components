@@ -250,12 +250,6 @@
             }
         }
 
-        /*@Watch('switchItem')
-        switchValue(newVal, oldVal){
-            console.log(newVal);
-            this.$emit('input', newVal);
-        }*/
-
         switchHandler(event){
             console.log(event);
             this.$emit('input', event)

@@ -28,13 +28,20 @@
                 <div>Default dataType: {{attribute.dataType}}</div>
                 <div>Value: {{attribute.value}}</div>
 
-            <s-attribute-default
+            <s-attribute-getter
                     required
                     :type="attribute.dataType"
                     v-model="attribute.value"
                     :default-value="attribute.default"
-            ></s-attribute-default>
+            ></s-attribute-getter>
 
+            <s-attributes-collector
+                    required
+                    :type="attribute.dataType"
+                    :attributes="attribute"
+                    :default-value="attribute.default"
+                    v-model="attribute.value"
+            ></s-attributes-collector>
         </div>
     </v-app>
 

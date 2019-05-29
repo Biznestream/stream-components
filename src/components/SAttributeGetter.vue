@@ -180,7 +180,7 @@
     import * as DataTypes from '../constants';
 
     export default @Component({
-        name: "SAttributeDefault",
+        name: "SAttributeGetter.vue",
         filters: {
             formatDate (date) {
                 return moment(date).format('DD.MM.YYYY HH:mm');
@@ -227,9 +227,9 @@
         }
 
         changeHandler(index){
-            let array = [...this.defaultValue];
+            let array = this.defaultValue.map(item => ({...item}));
             array[index].checked = !array[index].checked;
-            this.$emit('input', [...array]);
+            this.$emit('input', array);
         }
 
         get transformData(){
