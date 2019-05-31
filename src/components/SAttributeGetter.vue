@@ -52,7 +52,7 @@
                     <v-checkbox
                             :label="item.title"
                             :value="item.checked"
-                            @change="changeHandler(index)"
+                            @change="changeHandler(index, $event)"
                     >
                     </v-checkbox>
                 </v-flex>
@@ -91,7 +91,7 @@
                     >
                         <v-text-field
                                 slot="activator"
-                                label="Picker in menu"
+                                :label="defaultValue"
                                 prepend-icon="event"
                                 readonly
                                 :value="value"
@@ -118,7 +118,7 @@
                     type="number"
                     @input="$emit('input', $event)"
                     :rules="required ? [emptyValidation() && numberValidation()] : []"
-                    :value="value"
+                    :value="defaultValue"
             ></v-text-field>
 
         </template>
@@ -130,7 +130,7 @@
                     type="number"
                     @input="$emit('input', $event)"
                     :rules="required ? [emptyValidation()] : []"
-                    :value="value"
+                    :value="defaultValue"
             ></v-text-field>
 
         </template>
@@ -210,11 +210,16 @@
         }
 
         onEditorReady(){
-            this.value.length > 0 ? this.valid = true : this.valid = false;
+            console.log(this.defaultValue);
+            return this.defaultValue ? this.valid = true : this.valid = false;
         }
 
         get editorData(){
             return this.defaultValue
+        }
+
+        set editorData(val){
+            return val
         }
 
         onEditorInput(event){
@@ -226,9 +231,9 @@
             this.$emit('input', event)
         }
 
-        changeHandler(index){
+        changeHandler(index, event){
             let array = this.defaultValue.map(item => ({...item}));
-            array[index].checked = !array[index].checked;
+            array[index].checked = event;
             this.$emit('input', array);
         }
 

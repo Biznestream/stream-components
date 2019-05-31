@@ -37,8 +37,8 @@
 
             <s-attributes-collector
                     required
-                    :type="attribute.dataType"
                     :attributes="attribute"
+                    :attribute-value="attribute.value"
                     :default-value="attribute.default"
                     v-model="attribute.value"
             ></s-attributes-collector>

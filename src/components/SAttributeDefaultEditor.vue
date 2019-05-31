@@ -309,8 +309,9 @@
             this.$emit('input', [...this.array]);
         }
 
-        changeHandler(index) {
+        changeHandler(index, event) {
             if (this.type === DataTypes.MULTISELECT_TYPE) {
+                console.log(event);
                 this.array[index].checked = !this.array[index].checked;
                 this.$emit('input', [...this.array]);
             } else {

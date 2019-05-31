@@ -8,7 +8,9 @@
 
                 <v-text-field
                     required
-                    :value="item.value || item.default"
+                    :placeholder="item.default"
+                    :value="item.value || ''"
+                    :rules="required ? [emptyValidation()] : []"
                     @input="$emit('input', $event)"
                 ></v-text-field>
 
@@ -18,7 +20,9 @@
 
                 <v-textarea
                     required
-                    :value="item.value || item.default"
+                    :placeholder="item.default"
+                    :value="item.value || ''"
+                    :rules="required ? [emptyValidation()] : []"
                     @input="$emit('input', $event)"
                 ></v-textarea>
 
@@ -46,7 +50,7 @@
                         <v-checkbox
                                 :label="item.title"
                                 :value="item.checked"
-                                @change="changeHandler(index)"
+                                @change="changeHandler(index, $event)"
                         >
                         </v-checkbox>
                     </v-flex>
@@ -72,6 +76,81 @@
 
             </template>
 
+            <template v-else-if="item.dataType === 'datetime'">
+
+                <v-layout row wrap>
+                    <v-flex xs11 sm5>
+                        <v-menu
+                                lazy
+                                :close-on-content-click="false"
+                                v-model="menu"
+                                transition="scale-transition"
+                                offset-y
+                                full-width
+                                :nudge-right="40"
+                                max-width="290px"
+                                min-width="290px"
+                        >
+                            <v-text-field
+                                    slot="activator"
+                                    :label="defaultValue"
+                                    prepend-icon="event"
+                                    readonly
+                                    :value="value"
+                            ></v-text-field>
+                            <v-date-picker v-model="date" no-title scrollable actions>
+                                <template>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
+                                        <v-btn flat color="primary" @click="save">OK</v-btn>
+                                    </v-card-actions>
+                                </template>
+                            </v-date-picker>
+                        </v-menu>
+                    </v-flex>
+                </v-layout>
+
+            </template>
+
+            <template v-else-if="item.dataType === 'number'">
+                <h4>Number</h4>
+
+                <v-text-field
+                        label="Integer"
+                        type="number"
+                        @input="$emit('input', $event)"
+                        :rules="required ? [emptyValidation() && numberValidation()] : []"
+                        :value="item.value || defaultValue"
+                ></v-text-field>
+
+            </template>
+
+            <template v-else-if="item.dataType === 'decimal'">
+                <h4>Decimal</h4>
+
+                <v-text-field
+                        label="Integer"
+                        type="number"
+                        @input="$emit('input', $event)"
+                        :rules="required ? [emptyValidation()] : []"
+                        :value="item.value || defaultValue"
+                ></v-text-field>
+
+            </template>
+
+            <template v-else-if="item.dataType === 'link'">
+
+                <div v-html="link"></div>
+
+                <v-text-field
+                        :rules="required ? [emptyValidation() && urlValidation()] : []"
+                        @input="$emit('input', $event)"
+                        :value="item.value || defaultValue"
+                ></v-text-field>
+
+            </template>
+
         </div>
     </div>
 
@@ -89,21 +168,24 @@
         @Model('input') value;
         @Prop(Object) attributes;
         @Prop() defaultValue;
-        @Prop(String) type;
         @Prop(Boolean) required;
+        @Prop() attributeValue;
 
         data(){
             return {
                 attributesArray: [],
                 editor: ClassicEditor,
-                valid: false
+                valid: false,
+                menu: false,
+                date: ''
             }
         }
 
-        changeHandler(index){
+        changeHandler(index, event){
             let array = this.defaultValue.map(item => ({...item}));
-            array[index].checked = !array[index].checked;
+            array[index].checked = event;
             console.log(array);
+            console.log(event);
             this.$emit('input', [...array]);
         }
 
@@ -121,6 +203,14 @@
             }
         }
 
+        get editorData(){
+            return this.defaultValue
+        }
+
+        set editorData(val){
+            return val
+        }
+
         mounted(){
             this.attributesArray.push(this.attributes)
         }
@@ -130,12 +220,35 @@
         }
 
         onEditorReady(){
-            this.value.length > 0 ? this.valid = true : this.valid = false;
+            return (this.value || this.defaultValue) ? this.valid = true : this.valid = false
         }
 
         onEditorInput(event) {
             this.$emit('input', event);
             !event ? this.valid = false : this.valid = true
+        }
+
+        emptyValidation(message = 'This field is required.') {
+            return v => !!v || message;
+        }
+
+        numberValidation(message = 'You can enter only integers') {
+            return v => v.indexOf('.') > -1 ? message : false
+        }
+
+        urlValidation(message = 'You can enter only URL') {
+            const reg = /^(ftp|http|https):\/\/[^ "]+$/;
+            return v => reg.test(v) || message
+        }
+
+        cancel() {
+            this.date = '';
+            this.menu = false;
+        }
+
+        save() {
+            this.menu = false;
+            this.$emit('input', this.date);
         }
     }
 </script>
