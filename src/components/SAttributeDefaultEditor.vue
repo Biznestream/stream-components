@@ -55,7 +55,7 @@
                         </v-flex>
                         <v-flex>
                             <v-checkbox
-                                    @change="changeHandler(index, $event)"
+                                    @change="changeHandler(index)"
                                     :value="item.checked"
                                     v-if="type === DataTypes.MULTISELECT_TYPE">
                             </v-checkbox>
@@ -63,7 +63,7 @@
                                 <v-radio
                                         color="info"
                                         :value="index"
-                                        @change="changeHandler(index, $event)"
+                                        @change="changeHandler(index)"
                                 >
                                 </v-radio>
                             </v-radio-group>
@@ -309,9 +309,8 @@
             this.$emit('input', [...this.array]);
         }
 
-        changeHandler(index, event) {
+        changeHandler(index) {
             if (this.type === DataTypes.MULTISELECT_TYPE) {
-                console.log(event);
                 this.array[index].checked = !this.array[index].checked;
                 this.$emit('input', [...this.array]);
             } else {

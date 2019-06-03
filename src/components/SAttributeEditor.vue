@@ -48,11 +48,11 @@
         <template v-else-if="type === DataTypes.MULTISELECT_TYPE">
 
             <v-layout row wrap>
-                <v-flex xs1 v-for="(item, index) in defaultValue || []">
+                <v-flex xs1 v-for="(item, index) in val || defaultValue">
                     <v-checkbox
                             :label="item.title"
-                            :value="item.checked"
-                            @change="changeHandler(index, $event)"
+                            :input-value="item.checked"
+                            @change="changeHandler(index)"
                     >
                     </v-checkbox>
                 </v-flex>
@@ -180,7 +180,7 @@
     import * as DataTypes from '../constants';
 
     export default @Component({
-        name: "SAttributeGetter.vue",
+        name: "SAttributeEditor.vue",
         filters: {
             formatDate (date) {
                 return moment(date).format('DD.MM.YYYY HH:mm');
@@ -192,6 +192,7 @@
         @Model('input') value;
         @Prop(String) type;
         @Prop(Boolean) required;
+        @Prop() val;
         @Prop() defaultValue;
 
         data () {
@@ -231,10 +232,16 @@
             this.$emit('input', event)
         }
 
-        changeHandler(index, event){
-            let array = this.defaultValue.map(item => ({...item}));
-            array[index].checked = event;
-            this.$emit('input', array);
+        changeHandler(index){
+            if(!this.val){
+                let array = this.defaultValue.map(item => ({...item}));
+                array[index].checked = !array[index].checked;
+                this.$emit('input', array);
+            } else {
+                let array = [...this.val];
+                array[index].checked = !array[index].checked;
+                this.$emit('input', array);
+            }
         }
 
         get transformData(){

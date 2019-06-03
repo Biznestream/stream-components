@@ -28,20 +28,23 @@
                 <div>Default dataType: {{attribute.dataType}}</div>
                 <div>Value: {{attribute.value}}</div>
 
-            <s-attribute-getter
+            <s-attribute-editor
                     required
                     :type="attribute.dataType"
-                    v-model="attribute.value"
                     :default-value="attribute.default"
-            ></s-attribute-getter>
+                    :val="attribute.value"
+                    v-model="attribute.value"
+            ></s-attribute-editor>
 
             <s-attributes-collector
-                    required
-                    :attributes="attribute"
-                    :attribute-value="attribute.value"
-                    :default-value="attribute.default"
-                    v-model="attribute.value"
+                    :data-array="targetArray"
+                    @input="eventHandler([`${$event[0]}`, $event[1]])"
             ></s-attributes-collector>
+
+            <ul v-for="item in targetArray">
+                <li>{{item.default}}</li>
+                <li>{{item.value}}</li>
+            </ul>
         </div>
     </v-app>
 
@@ -61,7 +64,50 @@
             el: '#app',
             data: {
                 test: '1',
-                attribute: { dataType: 'short-text', default: 'Test' }
+                attribute: { dataType: 'short-text', default: 'Test' },
+                targetArray: [
+                    {
+                        dataType: 'multiselect',
+                        default: [
+                            { "checked": true, "title": "asdasd" },
+                            { "checked": true, "title": "qweqwe" },
+                            { "checked": false, "title": "qwerty" }
+                        ],
+                        value: [
+                            { "checked": true, "title": "asdasd" },
+                            { "checked": true, "title": "qweqwe" },
+                            { "checked": false, "title": "test" }
+                        ]
+                    },
+                    {
+                        dataType: 'paragraph',
+                        default: 'Paragraph text',
+                        value: ''
+                    },
+                    {
+                        dataType: 'short-text',
+                        default: 'Short text default',
+                        value: ''
+                    },
+                    {
+                        dataType: 'dropdown',
+                        default: [
+                            { "checked": true, "title": "first test" },
+                            { "checked": false, "title": "second test" } ] ,
+                        value: ''
+                    },
+                    {
+                        dataType: 'richtext',
+                        default: 'Test wysywig',
+                        value: ''
+                    },
+
+                ]
+            },
+            methods: {
+                eventHandler(val){
+                    this.targetArray[val[0]].value = val[1];
+                }
             }
         });
     </script>
