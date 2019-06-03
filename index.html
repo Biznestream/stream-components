@@ -38,7 +38,7 @@
 
             <s-attributes-collector
                     :data-array="targetArray"
-                    @input="eventHandler([`${$event[0]}`, $event[1]])"
+                    @input="eventHandler"
             ></s-attributes-collector>
 
             <ul v-for="item in targetArray">
