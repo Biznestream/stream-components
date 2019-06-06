@@ -115,10 +115,11 @@
 
             <v-text-field
                     label="Integer"
+                    required
                     type="number"
                     @input="$emit('input', $event)"
                     :rules="required ? [emptyValidation() && numberValidation()] : []"
-                    :value="defaultValue"
+                    :placeholder="defaultValue"
             ></v-text-field>
 
         </template>
@@ -127,22 +128,21 @@
 
             <v-text-field
                     label="Integer"
+                    required
                     type="number"
                     @input="$emit('input', $event)"
                     :rules="required ? [emptyValidation()] : []"
-                    :value="defaultValue"
+                    :placeholder="defaultValue"
             ></v-text-field>
 
         </template>
 
         <template v-else-if="type === DataTypes.LINK_TYPE">
 
-            <div v-html="link"></div>
-
             <v-text-field
                     :rules="required ? [emptyValidation() && urlValidation()] : []"
                     @input="$emit('input', $event)"
-                    :value="value"
+                    :placeholder="defaultValue"
             ></v-text-field>
 
         </template>
@@ -150,8 +150,8 @@
         <template v-else-if="type === DataTypes.SWITCH_TYPE">
 
             <v-switch
-                    :value="value"
-                    :label="`Selected: ${value.toString()}`"
+                    :true-value="defaultValue"
+                    :label="`Selected: ${defaultValue.toString()}`"
                     @change="switchHandler($event)"
             ></v-switch>
 
@@ -211,7 +211,6 @@
         }
 
         onEditorReady(){
-            console.log(this.defaultValue);
             return this.defaultValue ? this.valid = true : this.valid = false;
         }
 
@@ -256,10 +255,6 @@
                 array,
                 selected
             }
-        }
-
-        get link(){
-            return `<a target="_blank" href="${this.value}">${this.value}</a>`;
         }
 
         emptyValidation(message = 'This field is required.') {

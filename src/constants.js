@@ -12,8 +12,8 @@ export const SWITCH_TYPE = 'switch';
 export const OPTION_TYPE = 'option';
 export const LIST_TYPE = 'list';
 export const SEPARATOR_TYPE = 'separator';
-export const DROPDOWN_TYPE = 'dropdown';
-export const MULTISELECT_TYPE = 'multiselect';
+export const DROPDOWN_TYPE = 'drop-down';
+export const MULTISELECT_TYPE = 'multi-select';
 
 export const ALL_ATTRIBUTE_TYPES = [
   { key: SHORTTEXT_TYPE, title: 'Short Text' },
