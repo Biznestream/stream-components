@@ -1,7 +1,6 @@
 <template>
 
     <div>
-        <h2>Collector</h2>
         <div v-for="(item, index) in dataArray">
             <SAttributeEditor
                     required
