@@ -61,7 +61,6 @@
                             </v-checkbox>
                             <v-radio-group v-model="selectedItemIndex" :mandatory="false" v-else>
                                 <v-radio
-                                        color="info"
                                         :value="index"
                                         @change="changeHandler(index)"
                                 >
@@ -70,8 +69,7 @@
                         </v-flex>
                         <v-flex>
                             <v-btn icon ripple>
-                                <v-icon color="grey lighten-1"
-                                        @click="removeItem(index)">
+                                <v-icon @click="removeItem(index)">
                                     delete
                                 </v-icon>
                             </v-btn>
@@ -87,7 +85,7 @@
                                 required
                         ></v-text-field>
                     </v-container>
-                    <v-btn color="info" @click="addItem">Add</v-btn>
+                    <v-btn @click="addItem">Add</v-btn>
                 </v-form>
             </div>
 
@@ -119,8 +117,8 @@
                             <template>
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
-                                    <v-btn flat color="primary" @click="save">OK</v-btn>
+                                    <v-btn flat @click="cancel">Cancel</v-btn>
+                                    <v-btn flat @click="save">OK</v-btn>
                                 </v-card-actions>
                             </template>
                         </v-date-picker>

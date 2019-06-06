@@ -100,8 +100,8 @@
                             <template>
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
-                                    <v-btn flat color="primary" @click="save">OK</v-btn>
+                                    <v-btn flat @click="cancel">Cancel</v-btn>
+                                    <v-btn flat @click="save">OK</v-btn>
                                 </v-card-actions>
                             </template>
                         </v-date-picker>

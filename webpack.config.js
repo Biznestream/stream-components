@@ -68,7 +68,12 @@ module.exports = {
 
     externals: {
         vue: 'vue',
+        vuedraggable: 'vuedraggable',
+        moment: 'moment',
         vuex: 'vuex',
+        vuetify: 'vuetify',
         'vue-class-component': 'vue-class-component',
-    },
+        '@ckeditor/ckeditor5-build-classic': '@ckeditor/ckeditor5-build-classic',
+        '@ckeditor/ckeditor5-vue': '@ckeditor/ckeditor5-vue'
+    }
 };
