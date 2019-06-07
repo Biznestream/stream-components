@@ -1,12 +1,12 @@
 <template>
 
     <div>
-        <div v-for="(item, index) in dataArray">
+        <div v-for="(item, index) in dataArray" :key="item.id">
             <SAttributeEditor
                     required
                     :val="item.value"
                     :type="item.dataType"
-                    :default-value="item.default"
+                    :default-value="item.defaultValue"
                     @input="$emit('input', [`${index}`, $event])"
             />
         </div>

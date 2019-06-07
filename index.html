@@ -20,18 +20,18 @@
             <s-attribute-default-editor
                     required
                     :type="attribute.dataType"
-                    v-model="attribute.default"
+                    v-model="attribute.defaultValue"
             >
             </s-attribute-default-editor>
 
-                <div>Default value: {{attribute.default}} {{typeof attribute.default}}</div>
+                <div>Default value: {{attribute.defaultValue}} {{typeof attribute.defaultValue}}</div>
                 <div>Default dataType: {{attribute.dataType}}</div>
                 <div>Value: {{attribute.value}}</div>
 
             <s-attribute-editor
                     required
                     :type="attribute.dataType"
-                    :default-value="attribute.default"
+                    :default-value="attribute.defaultValue"
                     :val="attribute.value"
                     v-model="attribute.value"
             ></s-attribute-editor>
@@ -42,7 +42,7 @@
             ></s-attributes-collector>
 
             <ul v-for="item in targetArray">
-                <li>{{item.default}}</li>
+                <li>{{item.defaultValue}}</li>
                 <li>{{item.value}}</li>
             </ul>
         </div>
@@ -68,13 +68,13 @@
             el: '#app',
             data: {
                 test: '1',
-                attribute: { dataType: 'short-text', default: 'Test' },
+                attribute: { dataType: 'short-text', defaultValue: 'Test' },
                 targetArray: [
                     {
                         dataType: 'multiselect',
-                        default: [
-                            { "checked": true, "title": "asdasd" },
-                            { "checked": true, "title": "qweqwe" },
+                        defaultValue: [
+                            { "checked": true, "title": "assd" },
+                            { "checked": true, "title": "qweqqe" },
                             { "checked": false, "title": "qwerty" }
                         ],
                         value: [
@@ -85,34 +85,34 @@
                     },
                     {
                         dataType: 'paragraph',
-                        default: 'Paragraph text',
+                        defaultValue: 'Paragraph text',
                         value: ''
                     },
                     {
                         dataType: 'short-text',
-                        default: 'Short text default',
+                        defaultValue: 'Short text default',
                         value: ''
                     },
                     {
                         dataType: 'dropdown',
-                        default: [
+                        defaultValue: [
                             { "checked": true, "title": "first test" },
                             { "checked": false, "title": "second test" } ] ,
                         value: ''
                     },
                     {
                         dataType: 'richtext',
-                        default: 'Test wysywig',
+                        defaultValue: 'Test wysywig',
                         value: ''
                     },
                     {
                         dataType: 'link',
-                        default: 'http://localhost:8080/',
+                        defaultValue: 'http://localhost:8080/',
                         value: ''
                     },
                     {
                         dataType: 'switch',
-                        default: 'true',
+                        defaultValue: 'true',
                         value: ''
                     }
                 ]

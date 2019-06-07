@@ -24,8 +24,8 @@
             <ckeditor
                     :editor="editor"
                     :value="value"
-                    @blur="onEditorBlur"
-                    @ready="onEditorReady"
+                    @blur="editorValidation"
+                    @ready="editorValidation"
                     @input="onEditorInput($event)"
             ></ckeditor>
             <div v-if="!valid" class="v-messages theme--light error--text mb-1 mt-1">
@@ -40,7 +40,7 @@
 
             <div>
                 <draggable class="p-4" v-model="attributeItems" :options="{group:'value'}" handle=".handle">
-                    <v-layout row v-for="(item, index) in attributeItems">
+                    <v-layout row v-for="(item, index) in attributeItems" :key="item.id">
                         <v-flex>
                             <v-list-tile-avatar style="cursor: ns-resize">
                                 <v-icon class="handle">format_line_spacing</v-icon>
@@ -55,14 +55,14 @@
                         </v-flex>
                         <v-flex>
                             <v-checkbox
-                                    @change="changeHandler(index)"
+                                    @change="changeHandler(item, index)"
                                     :value="item.checked"
                                     v-if="type === DataTypes.MULTISELECT_TYPE">
                             </v-checkbox>
                             <v-radio-group v-model="selectedItemIndex" :mandatory="false" v-else>
                                 <v-radio
                                         :value="index"
-                                        @change="changeHandler(index)"
+                                        @change="changeHandler(item, index)"
                                 >
                                 </v-radio>
                             </v-radio-group>
@@ -307,23 +307,32 @@
             this.$emit('input', [...this.array]);
         }
 
-        changeHandler(index) {
+        changeHandler(item, index) {
+            const newItem = {...item};
+            const newArray = [...this.array];
+            newArray[index] = newItem;
             if (this.type === DataTypes.MULTISELECT_TYPE) {
-                this.array[index].checked = !this.array[index].checked;
-                this.$emit('input', [...this.array]);
+                newItem.checked = !newItem.checked;
+                this.$emit('input', newArray);
             } else {
-                this.array.forEach((elem, idx) => elem.checked = idx == index);
-                this.array[index].checked = true;
-                this.$emit('input', [...this.array])
+                newArray.forEach((elem, idx) => elem.checked = idx === index);
+                newItem.checked = true;
+                this.$emit('input', newArray)
             }
         }
 
-        onEditorBlur() {
-            this.value.length > 0 ? this.valid = true : this.valid = false;
+        get formattedValue () {
+            switch(this.type){
+                case DataTypes.MULTISELECT_TYPE:
+                case DataTypes.DROPDOWN_TYPE:
+                    return Array.isArray(this.value) ? this.value : [];
+                default:
+                    return this.value || ''
+            }
         }
 
-        onEditorReady(){
-            this.value.length > 0 ? this.valid = true : this.valid = false;
+        editorValidation() {
+            this.valid = this.formattedValue.length > 0
         }
 
         onEditorInput(event) {

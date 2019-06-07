@@ -48,7 +48,7 @@
         <template v-else-if="type === DataTypes.MULTISELECT_TYPE">
 
             <v-layout row wrap>
-                <v-flex xs1 v-for="(item, index) in val || defaultValue">
+                <v-flex xs1 v-for="(item, index) in val || defaultValue" :key="item">
                     <v-checkbox
                             :label="item.title"
                             :input-value="item.checked"
