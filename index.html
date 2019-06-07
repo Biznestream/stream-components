@@ -51,16 +51,20 @@
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="node_modules/vuex/dist/vuex.js"></script>
     <script src="node_modules/vue-class-component/dist/vue-class-component.js"></script>
+    <script src="node_modules/vuetify/dist/vuetify.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/almond@0.3.3/almond.min.js"></script>
     <script>
         var module = {};
         define('vue', function () { return Vue; });
         define('vuex', function () { return Vuex; });
+        define('vuetify', function () { return Vuetify; });
         define('vue-class-component', function () { return VueClassComponent; });
     </script>
     <script src="index.js"></script>
     <script>
+        var vuetify = new Vuetify();
         var app = new Vue({
+            vuetify,
             el: '#app',
             data: {
                 test: '1',
