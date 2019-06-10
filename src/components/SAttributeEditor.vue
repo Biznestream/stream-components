@@ -32,8 +32,8 @@
             <ckeditor
                     :editor="editor"
                     :value="defaultValue"
-                    @blur="onEditorBlur"
-                    @ready="onEditorReady"
+                    @blur="editorValidation"
+                    @ready="editorValidation"
                     @input="onEditorInput($event)"
                     v-model="editorData"
             ></ckeditor>
@@ -48,7 +48,7 @@
         <template v-else-if="type === DataTypes.MULTISELECT_TYPE">
 
             <v-layout row wrap>
-                <v-flex xs1 v-for="(item, index) in val || defaultValue" :key="item">
+                <v-flex xs1 v-for="(item, index) in val || defaultValue" :key="index">
                     <v-checkbox
                             :label="item.title"
                             :input-value="item.checked"
@@ -79,30 +79,29 @@
             <v-layout row wrap>
                 <v-flex xs11 sm5>
                     <v-menu
-                            lazy
-                            :close-on-content-click="false"
+                            ref="menu"
                             v-model="menu"
+                            :close-on-content-click="false"
+                            :return-value.sync="date"
                             transition="scale-transition"
                             offset-y
                             full-width
-                            :nudge-right="40"
-                            max-width="290px"
                             min-width="290px"
                     >
-                        <v-text-field
-                                slot="activator"
-                                :label="defaultValue"
-                                prepend-icon="event"
-                                readonly
-                                :value="value"
-                        ></v-text-field>
-                        <v-date-picker v-model="date" no-title scrollable actions>
+                        <template v-slot:activator="{ on }">
+                            <v-text-field
+                                    v-model="date"
+                                    :label="defaultValue"
+                                    prepend-icon="event"
+                                    readonly
+                                    v-on="on"
+                            ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="date" no-title scrollable>
                             <template>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn flat @click="cancel">Cancel</v-btn>
-                                    <v-btn flat @click="save">OK</v-btn>
-                                </v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn text @click="cancel">Cancel</v-btn>
+                                <v-btn text @click="save">OK</v-btn>
                             </template>
                         </v-date-picker>
                     </v-menu>
@@ -127,7 +126,7 @@
         <template v-else-if="type === DataTypes.DECIMAL_TYPE">
 
             <v-text-field
-                    label="Integer"
+                    label="Decimal"
                     required
                     type="number"
                     @input="$emit('input', $event)"
@@ -206,13 +205,27 @@
             }
         }
 
-        onEditorBlur() {
+        get formattedValue () {
+            switch(this.type){
+                case DataTypes.MULTISELECT_TYPE:
+                case DataTypes.DROPDOWN_TYPE:
+                    return Array.isArray(this.value) ? this.value : [];
+                default:
+                    return this.value || this.defaultValue || ''
+            }
+        }
+
+        editorValidation() {
+            this.valid = this.formattedValue.length > 0
+        }
+
+        /*onEditorBlur() {
             this.value.length > 0 ? this.valid = true : this.valid = false;
         }
 
         onEditorReady(){
             return this.defaultValue ? this.valid = true : this.valid = false;
-        }
+        }*/
 
         get editorData(){
             return this.defaultValue
@@ -268,6 +281,7 @@
 
         save() {
             this.menu = false;
+            this.$refs.menu.save(this.date);
             this.$emit('input', this.date);
         }
 
@@ -277,7 +291,7 @@
         }
 
         numberValidation(message = 'You can enter only integers') {
-            return v => v.indexOf('.') > -1 ? message : false
+            return v => v ? (v.indexOf('.') > -1 ? message : false) : message
         }
     }
 

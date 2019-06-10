@@ -22,6 +22,7 @@
                     :type="attribute.dataType"
                     v-model="attribute.defaultValue"
             >
+
             </s-attribute-default-editor>
 
                 <div>Default value: {{attribute.defaultValue}} {{typeof attribute.defaultValue}}</div>
@@ -91,6 +92,11 @@
                     {
                         dataType: 'short-text',
                         defaultValue: 'Short text default',
+                        value: ''
+                    },
+                    {
+                        dataType: 'datetime',
+                        defaultValue: '2019-06-05',
                         value: ''
                     },
                     {

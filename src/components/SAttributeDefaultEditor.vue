@@ -40,7 +40,7 @@
 
             <div>
                 <draggable class="p-4" v-model="attributeItems" :options="{group:'value'}" handle=".handle">
-                    <v-layout row v-for="(item, index) in attributeItems" :key="item.id">
+                    <v-layout row v-for="(item, index) in attributeItems" :key="index">
                         <v-flex>
                             <v-list-tile-avatar style="cursor: ns-resize">
                                 <v-icon class="handle">format_line_spacing</v-icon>
@@ -50,13 +50,13 @@
                             <v-text-field
                                     :value="item.title"
                                     :rules="required ? [emptyValidation()] : []"
-                                    @input="editValue(index, $event)"
+                                    @input="editValue(item, index, $event)"
                             ></v-text-field>
                         </v-flex>
                         <v-flex>
                             <v-checkbox
                                     @change="changeHandler(item, index)"
-                                    :value="item.checked"
+                                    :input-value="item.checked"
                                     v-if="type === DataTypes.MULTISELECT_TYPE">
                             </v-checkbox>
                             <v-radio-group v-model="selectedItemIndex" :mandatory="false" v-else>
@@ -96,30 +96,29 @@
             <v-layout row wrap>
                 <v-flex xs11 sm5>
                     <v-menu
-                            lazy
-                            :close-on-content-click="false"
+                            ref="menu"
                             v-model="menu"
+                            :close-on-content-click="false"
+                            :return-value.sync="date"
                             transition="scale-transition"
                             offset-y
                             full-width
-                            :nudge-right="40"
-                            max-width="290px"
                             min-width="290px"
                     >
-                        <v-text-field
-                                slot="activator"
-                                label="Picker in menu"
-                                prepend-icon="event"
-                                readonly
-                                :value="value"
-                        ></v-text-field>
-                        <v-date-picker v-model="date" no-title scrollable actions>
+                        <template v-slot:activator="{ on }">
+                            <v-text-field
+                                    v-model="date"
+                                    label="Picker in menu"
+                                    prepend-icon="event"
+                                    readonly
+                                    v-on="on"
+                            ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="date" no-title scrollable>
                             <template>
-                                <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn flat @click="cancel">Cancel</v-btn>
-                                    <v-btn flat @click="save">OK</v-btn>
-                                </v-card-actions>
+                                    <v-btn text @click="cancel">Cancel</v-btn>
+                                    <v-btn text @click="save">OK</v-btn>
                             </template>
                         </v-date-picker>
                     </v-menu>
@@ -143,7 +142,7 @@
         <template v-else-if="type === DataTypes.DECIMAL_TYPE">
 
             <v-text-field
-                    label="Integer"
+                    label="Decimal"
                     type="number"
                     @input="$emit('input', $event)"
                     :rules="required ? [emptyValidation()] : []"
@@ -249,7 +248,6 @@
         }
 
         switchHandler(event){
-            console.log(event);
             this.$emit('input', event)
         }
 
@@ -264,6 +262,10 @@
 
         get selectedItemIndex(){
             return this.value.findIndex(item => item.checked);
+        }
+
+        set selectedItemIndex(val){
+            return val
         }
 
         get attributeItems() {
@@ -285,39 +287,53 @@
         }
 
         addItem() {
+            const val = this.attributeItems;
             const newItem = {
                 checked: false,
                 title: this.name
             };
             if (this.$refs.form.validate()) {
-                this.array.push(newItem);
-                this.$emit('input', [...this.array]);
+                if (val) {
+                    const newArray = [...this.attributeItems];
+                    newArray.push(newItem);
+                    this.$emit('input', newArray);
+                } else {
+                    this.array.push(newItem);
+                    const newArray = [...this.array];
+                    this.$emit('input', newArray);
+                }
                 this.$refs.form.reset();
                 this.$refs.form.resetValidation();
             }
         }
 
-        editValue(index, event) {
-            this.array[index].title = event;
-            this.$emit('input', [...this.array])
+        editValue(item, index, event) {
+            const editedObj = {...item};
+            const newArray = [...this.attributeItems];
+            newArray[index] = editedObj;
+            editedObj.title = event;
+            this.$emit('input', newArray);
         }
 
         removeItem(index) {
-            this.array.splice(index, 1);
-            this.$emit('input', [...this.array]);
+            const newArray = [...this.attributeItems];
+            newArray.splice(index, 1);
+            this.$emit('input', newArray);
         }
 
         changeHandler(item, index) {
             const newItem = {...item};
-            const newArray = [...this.array];
+            const newArray = [...this.attributeItems];
             newArray[index] = newItem;
             if (this.type === DataTypes.MULTISELECT_TYPE) {
                 newItem.checked = !newItem.checked;
                 this.$emit('input', newArray);
             } else {
-                newArray.forEach((elem, idx) => elem.checked = idx === index);
+                const copy = newArray.map(item => ({...item}));
+                copy.forEach((elem, idx) => elem.checked = idx === index);
                 newItem.checked = true;
-                this.$emit('input', newArray)
+                copy[index] = newItem;
+                this.$emit('input', copy)
             }
         }
 
@@ -347,6 +363,7 @@
 
         save() {
             this.menu = false;
+            this.$refs.menu.save(this.date);
             this.$emit('input', this.date);
         }
 
@@ -356,7 +373,6 @@
 
         onFileChange($event) {
             const files = $event.target.files || $event.dataTransfer.files;
-            console.log(files);
             this.$emit('input', [...files]);
         }
     }
