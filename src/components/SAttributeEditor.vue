@@ -67,6 +67,7 @@
                     <v-overflow-btn
                             :items="transformData.array"
                             :label="transformData.selected || ''"
+                            @change="changeSelected($event)"
                             target="#dropdown"
                     ></v-overflow-btn>
                 </v-flex>
@@ -194,7 +195,7 @@
         @Prop() val;
         @Prop() defaultValue;
 
-        data () {
+        data(){
             return {
                 DataTypes,
                 date: '',
@@ -205,7 +206,15 @@
             }
         }
 
-        get formattedValue () {
+        changeSelected(val){
+            const copy = this.defaultValue.map(item => ({...item}));
+            const index = copy.findIndex(item => item.title === val);
+            copy.forEach((elem, idx) => elem.checked = idx === index);
+            copy[index].checked = true;
+            this.$emit('input', copy);
+        }
+
+        get formattedValue(){
             switch(this.type){
                 case DataTypes.MULTISELECT_TYPE:
                 case DataTypes.DROPDOWN_TYPE:
@@ -218,14 +227,6 @@
         editorValidation() {
             this.valid = this.formattedValue.length > 0
         }
-
-        /*onEditorBlur() {
-            this.value.length > 0 ? this.valid = true : this.valid = false;
-        }
-
-        onEditorReady(){
-            return this.defaultValue ? this.valid = true : this.valid = false;
-        }*/
 
         get editorData(){
             return this.defaultValue
@@ -259,7 +260,7 @@
         get transformData(){
             let selected;
             let array;
-            if(typeof this.defaultValue === "object"){
+            if(Array.isArray(this.defaultValue)){
                 array = this.defaultValue.map(item => item.title);
                 selected = this.defaultValue.filter(item => item.checked === true);
                 selected.length > 0 ? selected = selected[0].title : selected = 'Select default value'

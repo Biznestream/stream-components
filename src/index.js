@@ -2,14 +2,14 @@ import Vue from 'vue';
 import SAttributeTypeSelector from './components/SAttributeTypeSelector';
 import SAttributeDefaultEditor from './components/SAttributeDefaultEditor';
 import SAttributeEditor from './components/SAttributeEditor';
-import SAttributesCollector from './components/SAttributesCollector';
+import SAttributesEditor from './components/SAttributesEditor';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 
 export {
   SAttributeTypeSelector,
   SAttributeDefaultEditor,
   SAttributeEditor,
-  SAttributesCollector
+  SAttributesEditor
 };
 
 export default function install(Vue) {
@@ -18,7 +18,7 @@ export default function install(Vue) {
   Vue.component('SAttributeTypeSelector', SAttributeTypeSelector);
   Vue.component('SAttributeDefaultEditor', SAttributeDefaultEditor);
   Vue.component('SAttributeEditor', SAttributeEditor);
-  Vue.component('SAttributesCollector', SAttributesCollector);
+  Vue.component('SAttributesEditor', SAttributesEditor);
 }
 install.version = '__VERSION__';
 

@@ -25,9 +25,9 @@
 
             </s-attribute-default-editor>
 
-                <div>Default value: {{attribute.defaultValue}} {{typeof attribute.defaultValue}}</div>
+                <!--<div>Default value: {{attribute.defaultValue}} {{typeof attribute.defaultValue}}</div>
                 <div>Default dataType: {{attribute.dataType}}</div>
-                <div>Value: {{attribute.value}}</div>
+                <div>Value: {{attribute.value}}</div>-->
 
             <s-attribute-editor
                     required
@@ -37,15 +37,17 @@
                     v-model="attribute.value"
             ></s-attribute-editor>
 
-            <s-attributes-collector
-                    :data-array="targetArray"
-                    @input="eventHandler"
-            ></s-attributes-collector>
+            <s-attributes-editor
+                    :val="targetArray"
+                    v-model="testData.newVal"
+            ></s-attributes-editor>
 
-            <ul v-for="item in targetArray">
+            {{testData.newVal}}
+
+            <!--<ul v-for="item in targetArray">
                 <li>{{item.defaultValue}}</li>
                 <li>{{item.value}}</li>
-            </ul>
+            </ul>-->
         </div>
     </v-app>
 
@@ -72,7 +74,7 @@
                 attribute: { dataType: 'short-text', defaultValue: 'Test' },
                 targetArray: [
                     {
-                        dataType: 'multiselect',
+                        dataType: 'multi-select',
                         defaultValue: [
                             { "checked": true, "title": "assd" },
                             { "checked": true, "title": "qweqqe" },
@@ -100,7 +102,7 @@
                         value: ''
                     },
                     {
-                        dataType: 'dropdown',
+                        dataType: 'drop-down',
                         defaultValue: [
                             { "checked": true, "title": "first test" },
                             { "checked": false, "title": "second test" } ] ,
@@ -121,11 +123,14 @@
                         defaultValue: 'true',
                         value: ''
                     }
-                ]
+                ],
+                testData: {
+                    newVal: 'test'
+                }
             },
             methods: {
-                eventHandler(val){
-                    this.targetArray[val[0]].value = val[1];
+                getData(val){
+                    console.log(val);
                 }
             }
         });
