@@ -6,55 +6,23 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Component Playground</title>
-    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
 </head>
 <body>
 
-    <v-app id="app">
+    <div id="app">
 
-        <div class="container">
-
-            <s-attribute-type-selector v-model="attribute.dataType"></s-attribute-type-selector>
-
-            <s-attribute-default-editor
-                    required
-                    :type="attribute.dataType"
-                    v-model="attribute.defaultValue"
-            >
-
-            </s-attribute-default-editor>
-
-                <!--<div>Default value: {{attribute.defaultValue}} {{typeof attribute.defaultValue}}</div>
-                <div>Default dataType: {{attribute.dataType}}</div>
-                <div>Value: {{attribute.value}}</div>-->
-
-            <s-attribute-editor
-                    required
-                    :type="attribute.dataType"
-                    :default-value="attribute.defaultValue"
-                    :val="attribute.value"
-                    v-model="attribute.value"
-            ></s-attribute-editor>
-
-            <s-attributes-editor
-                    :val="targetArray"
-                    v-model="testData.newVal"
-            ></s-attributes-editor>
-
-            {{testData.newVal}}
-
-            <!--<ul v-for="item in targetArray">
-                <li>{{item.defaultValue}}</li>
-                <li>{{item.value}}</li>
-            </ul>-->
-        </div>
-    </v-app>
+        <s-product-filter
+                v-model="attributes"
+                @update="getData"
+                :list="list"
+        ></s-product-filter>
+        {{attributes}}
+    </div>
 
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="node_modules/vuex/dist/vuex.js"></script>
     <script src="node_modules/vue-class-component/dist/vue-class-component.js"></script>
-    <script src="node_modules/vuetify/dist/vuetify.js"></script>
+    <script src="node_modules/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/almond@0.3.3/almond.min.js"></script>
     <script>
         var module = {};
@@ -65,73 +33,33 @@
     </script>
     <script src="index.js"></script>
     <script>
-        var vuetify = new Vuetify();
         var app = new Vue({
-            vuetify,
             el: '#app',
             data: {
-                test: '1',
-                attribute: { dataType: 'short-text', defaultValue: 'Test' },
-                targetArray: [
-                    {
-                        dataType: 'multi-select',
-                        defaultValue: [
-                            { "checked": true, "title": "assd" },
-                            { "checked": true, "title": "qweqqe" },
-                            { "checked": false, "title": "qwerty" }
-                        ],
-                        value: [
-                            { "checked": true, "title": "asdasd" },
-                            { "checked": true, "title": "qweqwe" },
-                            { "checked": false, "title": "test" }
-                        ]
-                    },
-                    {
-                        dataType: 'paragraph',
-                        defaultValue: 'Paragraph text',
-                        value: ''
-                    },
-                    {
-                        dataType: 'short-text',
-                        defaultValue: 'Short text default',
-                        value: ''
-                    },
-                    {
-                        dataType: 'datetime',
-                        defaultValue: '2019-06-05',
-                        value: ''
-                    },
-                    {
-                        dataType: 'drop-down',
-                        defaultValue: [
-                            { "checked": true, "title": "first test" },
-                            { "checked": false, "title": "second test" } ] ,
-                        value: ''
-                    },
-                    {
-                        dataType: 'richtext',
-                        defaultValue: 'Test wysywig',
-                        value: ''
-                    },
-                    {
-                        dataType: 'link',
-                        defaultValue: 'http://localhost:8080/',
-                        value: ''
-                    },
-                    {
-                        dataType: 'switch',
-                        defaultValue: 'true',
-                        value: ''
-                    }
-                ],
-                testData: {
-                    newVal: 'test'
-                }
+                attributes: {},
+                list: []
             },
             methods: {
                 getData(val){
-                    console.log(val);
+                    const myUrl = Object.keys(val).reduce((url, key) => {
+                        const param = Array.isArray(val[key])
+                            ? val[key].join('-')
+                            : val[key];
+                        return [
+                            url,
+                            [key, encodeURIComponent(param)].join('=')
+                        ].join('&f')
+                    }, 'https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?');
+                    console.log(myUrl);
+                    axios.get(`${myUrl}&only_count=true&section=122761238&section_id=122761238`)
+                        .then(res => this.list = res.data.attributes)
+                        .catch(error => console.error(error))
                 }
+            },
+            mounted () {
+                axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?fTragkraft_num_kg=2646-3500&offset=0&section=122761238')
+                    .then(res => this.list = res.data.attributes)
+                    .catch(error => console.error(error))
             }
         });
     </script>

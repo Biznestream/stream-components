@@ -174,10 +174,10 @@
 </template>
 
 <script>
-    import {Vue, Prop, Model, Component} from 'vue-property-decorator';
-    import moment from 'moment';
+    import {Vue, Prop, Model, Component} from 'vue-property-decorator/lib/vue-property-decorator';
+    import moment from 'moment/moment';
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-    import * as DataTypes from '../constants';
+    import * as DataTypes from '../../constants';
 
     export default @Component({
         name: "SAttributeEditor.vue",

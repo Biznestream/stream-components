@@ -204,8 +204,8 @@
     }
 </style>
 <script>
-    import {Vue, Prop, Model, Watch, Component} from 'vue-property-decorator';
-    import * as DataTypes from '../constants';
+    import {Vue, Prop, Model, Watch, Component} from 'vue-property-decorator/lib/vue-property-decorator';
+    import * as DataTypes from '../../constants';
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     import draggable from 'vuedraggable';
     import sortBy from 'lodash/sortBy';

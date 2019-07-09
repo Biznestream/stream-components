@@ -16,17 +16,17 @@
 
 <script>
     import SAttributeEditor from './SAttributeEditor.vue'
-    import {Vue, Prop, Model, Component} from 'vue-property-decorator';
+    import {Vue, Prop, Model, Component} from 'vue-property-decorator/lib/vue-property-decorator';
 
     export default @Component({
         name: "SAttributesEditor.vue",
         components: {
             SAttributeEditor
-        },
+        }
     })
 
     class SAttributesCollector extends Vue {
-        // @Model('input') value;
+        @Model('input') value;
         @Prop(Array) val;
 
         getData(val){
