@@ -13,6 +13,7 @@
                     <s-range-input
                             @input="onFilter(item, $event)"
                             :options="item"
+                            :filterValues="currentData(item.name)"
                             :value="value[item.name] || currentFilter[item.name]"
                     ></s-range-input>
                 </div>
@@ -25,7 +26,6 @@
                 <button style="margin: .25rem" @click="resetFilter">Reset</button>
             </div>
         </div>
-        <div>{{currentFilter}}</div>
         <button style="margin: .25rem" @click="showResult">Show results</button>
     </div>
 </template>
@@ -45,6 +45,7 @@
 
     class ProductFilter extends Vue {
         @Prop() value;
+        @Prop() filterValues;
         @Prop() list;
 
         currentFilter = {};
@@ -84,6 +85,10 @@
 
         get getKeys(){
             return Object.keys(this.currentFilter);
+        }
+
+        currentData(name){
+            return this.filterValues.find(el => el.name === name)
         }
     }
 </script>

@@ -3,7 +3,7 @@
         <label>{{options.title}}</label>
         <select :value="setValue" @input="onInput($event)">
             <option
-                    v-for="(val, i) in options.values"
+                    v-for="(val, i) in getValues"
                     :key="i"
                     :value="val"
             >
@@ -24,10 +24,6 @@
         @Prop(Object) options;
         @Prop() value;
 
-        mounted(){
-            this.options.values.unshift('...')
-        }
-
         onInput(ev){
             const value = ev.target.value;
             if(value === '...'){
@@ -39,6 +35,13 @@
 
         get setValue(){
             return this.value ? this.value : '...'
+        }
+
+        get getValues(){
+            const filterOption = {...this.options};
+            const valuesArray = [...filterOption.values];
+            valuesArray.unshift('...');
+            return valuesArray;
         }
     }
 </script>

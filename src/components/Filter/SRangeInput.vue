@@ -5,12 +5,12 @@
             <input type="checkbox" v-model="checked" @input="onChange($event)">
         </label>
         <div class="range-input flex justify-between" style="margin-bottom: 1em" v-if="sliderValue && sliderValue.length === 2">
-            <input type="number" :value="sliderValue[0]" @input="onInput(0, $event)" :disabled="disabled">
-            <input type="number" :value="sliderValue[1]" @input="onInput(1, $event)" :disabled="disabled">
+            <input type="number" :value="getCurrentFilter[0] || sliderValue[0]" @input="onInput(0, $event)" :disabled="disabled">
+            <input type="number" :value="getCurrentFilter[1] || sliderValue[1]" @input="onInput(1, $event)" :disabled="disabled">
         </div>
         <vue-slider
                 ref="slider"
-                :value="sliderValue"
+                :value="getCurrentFilter || sliderValue"
                 :min="options.range.min"
                 :max="options.range.max"
                 :tooltip="'none'"
@@ -22,7 +22,7 @@
                 <div :class="['custom-dot', { focus }]"></div>
             </template>
         </vue-slider>
-        {{options}}
+        {{getCurrentFilter}}
     </div>
 </template>
 
@@ -39,6 +39,7 @@
 
     class SRangeInput extends Vue {
         @Prop(Object) options;
+        @Prop() filterValues;
         @Prop() value;
 
         @Watch('value')
@@ -64,6 +65,13 @@
 
         get sliderValue(){
             return this.value || [this.options.range.min, this.options.range.max]
+        }
+
+        get getCurrentFilter(){
+            if(this.filterValues){
+                return [this.filterValues.range.min, this.filterValues.range.max]
+            }
+            return false
         }
 
         process = dotsPos => [

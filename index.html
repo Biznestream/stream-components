@@ -15,14 +15,15 @@
                 v-model="attributes"
                 @update="getData"
                 :list="list"
+                :filter-values="filterValues"
         ></s-product-filter>
-        {{attributes}}
     </div>
 
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="node_modules/vuex/dist/vuex.js"></script>
     <script src="node_modules/vue-class-component/dist/vue-class-component.js"></script>
     <script src="node_modules/axios/dist/axios.min.js"></script>
+    <script src="node_modules/qs/dist/qs.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/almond@0.3.3/almond.min.js"></script>
     <script>
         var module = {};
@@ -37,29 +38,41 @@
             el: '#app',
             data: {
                 attributes: {},
-                list: []
+                list: [],
+                filterValues: []
             },
             methods: {
                 getData(val){
-                    const myUrl = Object.keys(val).reduce((url, key) => {
-                        const param = Array.isArray(val[key])
-                            ? val[key].join('-')
-                            : val[key];
-                        return [
-                            url,
-                            [key, encodeURIComponent(param)].join('=')
-                        ].join('&f')
-                    }, 'https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?');
-                    console.log(myUrl);
-                    axios.get(`${myUrl}&only_count=true&section=122761238&section_id=122761238`)
-                        .then(res => this.list = res.data.attributes)
-                        .catch(error => console.error(error))
+                    if(val){
+                        const newKeys = Object.keys(val).map(item => {
+                            return `f${item}`
+                        });
+                        const oldKeys = Object.keys(val);
+                        let newData = {};
+                        for(let i in newKeys){
+                            newData[newKeys[i]] = val[oldKeys[i]];
+                            val[newKeys[i]] = val[oldKeys[i]];
+                            delete val[newKeys[i]]
+                        }
+                        for(const key in newData){
+                            if (Array.isArray(newData[key])) {
+                                newData[key] = newData[key][0] + '-' + newData[key][1]
+                            }
+                        }
+                        axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?', {
+                            params: newData
+                        })
+                            .then(res => this.filterValues = res.data.attributes)
+                            .catch(error => console.error(error))
+                    } else {
+                        axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?offset=0&section=122761238')
+                            .then(res => this.list = res.data.attributes)
+                            .catch(error => console.error(error))
+                    }
                 }
             },
             mounted () {
-                axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?fTragkraft_num_kg=2646-3500&offset=0&section=122761238')
-                    .then(res => this.list = res.data.attributes)
-                    .catch(error => console.error(error))
+                this.getData();
             }
         });
     </script>
