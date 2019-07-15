@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label>{{options.title}}</label>
+        <label>{{initialValues.title}}</label>
         <select :value="setValue" @input="onInput($event)">
             <option
                     v-for="(val, i) in getValues"
@@ -21,7 +21,7 @@
     })
 
     class Dropdown extends Vue {
-        @Prop(Object) options;
+        @Prop(Object) initialValues;
         @Prop() value;
 
         onInput(ev){
@@ -38,7 +38,7 @@
         }
 
         get getValues(){
-            const filterOption = {...this.options};
+            const filterOption = {...this.initialValues};
             const valuesArray = [...filterOption.values];
             valuesArray.unshift('...');
             return valuesArray;

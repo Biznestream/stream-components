@@ -1,18 +1,18 @@
 <template>
     <div>
         <label class="flex justify-between">
-            <span>{{options.title}}<span v-if="options.suffix">, {{options.suffix}}</span></span>
+            <span>{{initialValues.title}}<span v-if="initialValues.suffix">, {{initialValues.suffix}}</span></span>
             <input type="checkbox" v-model="checked" @input="onChange($event)">
         </label>
-        <div class="range-input flex justify-between" style="margin-bottom: 1em" v-if="sliderValue && sliderValue.length === 2">
-            <input type="number" :value="getCurrentFilter[0] || sliderValue[0]" @input="onInput(0, $event)" :disabled="disabled">
-            <input type="number" :value="getCurrentFilter[1] || sliderValue[1]" @input="onInput(1, $event)" :disabled="disabled">
+        <div class="range-input flex justify-between" style="margin-bottom: 1em" v-if="initialFilter && initialFilter.length === 2">
+            <input type="number" :value="currentFilter[0] || initialFilter[0]" @input="onInput(0, $event)" :disabled="disabled">
+            <input type="number" :value="currentFilter[1] || initialFilter[1]" @input="onInput(1, $event)" :disabled="disabled">
         </div>
         <vue-slider
                 ref="slider"
-                :value="getCurrentFilter || sliderValue"
-                :min="options.range.min"
-                :max="options.range.max"
+                :value="currentFilter || initialFilter"
+                :min="initialValues.range.min"
+                :max="initialValues.range.max"
                 :tooltip="'none'"
                 :enable-cross="false"
                 :disabled="disabled"
@@ -22,7 +22,6 @@
                 <div :class="['custom-dot', { focus }]"></div>
             </template>
         </vue-slider>
-        {{getCurrentFilter}}
     </div>
 </template>
 
@@ -38,7 +37,7 @@
     })
 
     class SRangeInput extends Vue {
-        @Prop(Object) options;
+        @Prop(Object) initialValues;
         @Prop() filterValues;
         @Prop() value;
 
@@ -59,17 +58,17 @@
             if(!checked){
                 this.$emit('input', undefined)
             } else {
-                this.$emit('input', this.sliderValue)
+                this.$emit('input', this.currentFilter || this.initialFilter);
             }
         }
 
-        get sliderValue(){
-            return this.value || [this.options.range.min, this.options.range.max]
+        get initialFilter(){
+            return this.value || [this.initialValues.range.min, this.initialValues.range.max]
         }
 
-        get getCurrentFilter(){
+        get currentFilter(){
             if(this.filterValues){
-                return [this.filterValues.range.min, this.filterValues.range.max]
+                return this.value || [this.filterValues.range.min, this.filterValues.range.max]
             }
             return false
         }
@@ -79,7 +78,7 @@
         ];
 
         onInput(index, ev){
-            const newValue = [...this.sliderValue];
+            const newValue = [...this.initialFilter];
             newValue[index] = +ev.target.value;
             this.$emit('input', newValue);
         }

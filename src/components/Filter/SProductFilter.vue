@@ -1,19 +1,19 @@
 <template>
     <div class="container">
         <div class="filter-wrap flex">
-            <div class="product-filters" v-for="(item, index) in list" :key="index">
+            <div class="product-filters" v-for="(item, index) in initialValues" :key="index">
                 <div v-if="item.type === 'char'" class="select flex direction-column">
                     <s-dropdown
                             @input="onFilter(item, $event)"
-                            :options="item"
+                            :initial-values="item"
                             :value="value[item.name] || currentFilter[item.name]"
                     ></s-dropdown>
                 </div>
                 <div v-if="item.type === 'number'" class="range-slider flex direction-column">
                     <s-range-input
                             @input="onFilter(item, $event)"
-                            :options="item"
-                            :filterValues="currentData(item.name)"
+                            :initial-values="item"
+                            :filter-values="currentData(item.name)"
                             :value="value[item.name] || currentFilter[item.name]"
                     ></s-range-input>
                 </div>
@@ -46,7 +46,7 @@
     class ProductFilter extends Vue {
         @Prop() value;
         @Prop() filterValues;
-        @Prop() list;
+        @Prop() initialValues;
 
         currentFilter = {};
         showButtons = false;
@@ -76,7 +76,6 @@
         resetItem(item){
             const newValue = {...this.currentFilter};
             delete newValue[item];
-            //newValue[item] = undefined;
             this.showFilter = true;
             this.currentFilter = newValue;
             this.$emit('input', newValue);
