@@ -6,7 +6,7 @@
                     <s-dropdown
                             @input="onFilter(item, $event)"
                             :initial-values="item"
-                            :value="value[item.name] || currentFilter[item.name]"
+                            :value="currentFilter[item.name]"
                     ></s-dropdown>
                 </div>
                 <div v-if="item.type === 'number'" class="range-slider flex direction-column">
@@ -14,7 +14,7 @@
                             @input="onFilter(item, $event)"
                             :initial-values="item"
                             :filter-values="currentData(item.name)"
-                            :value="value[item.name] || currentFilter[item.name]"
+                            :value="currentFilter[item.name]"
                     ></s-range-input>
                 </div>
             </div>
@@ -22,11 +22,11 @@
         <div>
             <button style="margin: .25rem" v-for="(item, i) in getKeys" @click="resetItem(item, i)" :key="i">{{item}}</button>
             <div>
-                <button style="margin: .25rem" @click="$emit('input', currentFilter)">Submit</button>
+                <button style="margin: .25rem" @click="showResult">Submit</button>
                 <button style="margin: .25rem" @click="resetFilter">Reset</button>
+                <p>Current filter: {{currentFilter}}</p>
             </div>
         </div>
-        <button style="margin: .25rem" @click="showResult">Show results</button>
     </div>
 </template>
 
@@ -71,6 +71,7 @@
         showResult(){
             this.showButtons = true;
             this.showFilter = false;
+            this.$emit('input', this.currentFilter)
         }
 
         resetItem(item){
@@ -102,6 +103,10 @@
         display: flex;
     }
 
+    .wrap{
+        flex-wrap: wrap;
+    }
+
     .justify-around{
         justify-content: space-around;
     }
@@ -116,9 +121,11 @@
 
     .container{
         max-width: 1140px;
-        padding: 15px 0;
+        padding: 0 15px;
         width: 100%;
-        margin: 0 auto;
+        //margin: 0 auto;
+        margin-right: auto;
+        margin-left: auto;
 
         .product-filters{
             margin: 0 10px;
@@ -127,6 +134,11 @@
         .select{
             width: 100%;
         }
+    }
+
+    .row{
+        margin-left: -15px;
+        margin-right: -15px;
     }
 
     .range-input{

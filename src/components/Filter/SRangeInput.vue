@@ -8,6 +8,8 @@
             <input type="number" :value="currentFilter[0] || initialFilter[0]" @input="onInput(0, $event)" :disabled="disabled">
             <input type="number" :value="currentFilter[1] || initialFilter[1]" @input="onInput(1, $event)" :disabled="disabled">
         </div>
+        <p>Current filter {{currentFilter}}</p>
+        <p>Initial filter {{initialFilter}}</p>
         <vue-slider
                 ref="slider"
                 :value="currentFilter || initialFilter"

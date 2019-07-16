@@ -11,11 +11,16 @@
 
     <div id="app">
         <s-product-filter
-                v-model="attributes"
-                @update="getData"
+                @input="getProducts"
+                @update="getFilterData"
                 :initial-values="initialValues"
                 :filter-values="filterValues"
         ></s-product-filter>
+        <s-products
+                :value="products"
+                @update="loadMore"
+        >
+        </s-products>
     </div>
 
     <script src="node_modules/vue/dist/vue.js"></script>
@@ -38,28 +43,14 @@
             data: {
                 attributes: {},
                 initialValues: [],
-                filterValues: []
+                filterValues: [],
+                products: []
             },
             methods: {
-                getData(val){
+                getFilterData(val){
                     if(val){
-                        const newKeys = Object.keys(val).map(item => {
-                            return `f${item}`
-                        });
-                        const oldKeys = Object.keys(val);
-                        let newData = {};
-                        for(let i in newKeys){
-                            newData[newKeys[i]] = val[oldKeys[i]];
-                            val[newKeys[i]] = val[oldKeys[i]];
-                            delete val[newKeys[i]]
-                        }
-                        for(const key in newData){
-                            if (Array.isArray(newData[key])) {
-                                newData[key] = newData[key][0] + '-' + newData[key][1]
-                            }
-                        }
                         axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?', {
-                            params: newData
+                            params: this.transformObject(val)
                         })
                             .then(res => this.filterValues = res.data.attributes)
                             .catch(error => console.error(error))
@@ -68,10 +59,59 @@
                             .then(res => this.initialValues = res.data.attributes)
                             .catch(error => console.error(error))
                     }
+                },
+                getProducts(val){
+                    const obj = {
+                      offset: 0,
+                      section: 122761238,
+                      section_id: 122761238
+                    };
+                    if(val){
+                        const requestParams = Object.assign(this.transformObject(val), obj);
+                        axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/products?configuration_id=619', {
+                            params: requestParams
+                        })
+                            .then(res => this.products = res.data.data)
+                            .catch(error => console.error(error))
+                    } else{
+                        axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/products/?configuration_id=619&offset=0&section=122761238&section_id=122761238')
+                            .then(res => this.products = res.data.data)
+                            .catch(error => console.error(error))
+                    }
+                },
+                transformObject(obj){
+                    const newKeys = Object.keys(obj).map(item => {
+                        return `f${item}`
+                    });
+                    const oldKeys = Object.keys(obj);
+                    let newData = {};
+                    for(let i in newKeys){
+                        newData[newKeys[i]] = obj[oldKeys[i]];
+                        obj[newKeys[i]] = obj[oldKeys[i]];
+                        delete obj[newKeys[i]]
+                    }
+                    for(const key in newData){
+                        if (Array.isArray(newData[key])) {
+                            newData[key] = newData[key][0] + '-' + newData[key][1]
+                        }
+                    }
+                    return newData;
+                },
+                loadMore(val){
+                    val === 1 ? val = 24 : val;
+                    axios.get(`https://stapler-mieten.staplercenter-pieckert.de/api/products?configuration_id=619&offset=${val}&section=122761238&section_id=122761238`)
+                        .then(res => {
+                            console.log(res.data.data);
+                            const {nextCount, products} = res.data.data;
+                            this.products.nextCount = nextCount;
+                            this.products.products = this.products.products.concat(products);
+                        })
+                        .catch(error => console.error(error))
                 }
             },
             mounted () {
-                this.getData();
+                this.getFilterData();
+                this.getProducts();
             }
         });
     </script>

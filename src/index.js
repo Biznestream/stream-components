@@ -5,6 +5,8 @@ import SAttributeEditor from './components/Attribute/SAttributeEditor';
 import SAttributesEditor from './components/Attribute/SAttributesEditor';
 import SProductFilter from './components/Filter/SProductFilter';
 import SDropdown from './components/Filter/SDropdown';
+import SProducts from './components/Filter/SProducts'
+import SProduct from './components/Filter/SProduct'
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import { SliderPlugin } from "@syncfusion/ej2-vue-inputs";
 import VueSlider from 'vue-slider-component'
@@ -16,7 +18,9 @@ export {
   SAttributeEditor,
   SAttributesEditor,
   SProductFilter,
-  SDropdown
+  SDropdown,
+  SProducts,
+  SProduct
 };
 
 export default function install(Vue) {
@@ -30,6 +34,8 @@ export default function install(Vue) {
   Vue.component('SAttributesEditor', SAttributesEditor);
   Vue.component('SProductFilter', SProductFilter);
   Vue.component('SDropdown', SDropdown);
+  Vue.component('SProducts', SProducts);
+  Vue.component('SProduct', SProduct);
 }
 install.version = '__VERSION__';
 
