@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1>Products</h1>
+        <h1>Products <span v-if="value.products">{{value.products.length}}</span></h1>
         <div class="flex wrap row">
             <s-product
                     v-for="product in value.products"
@@ -9,7 +9,8 @@
             ></s-product>
         </div>
         <div>{{value.nextCount}}</div>
-        <button @click="$emit('update', value.nextCount)" v-if="value.nextCount > 0">{{value.nextText}}</button>
+        <div ref="target">Load more</div>
+        <button ref="button" @click="update" v-if="value.nextCount > 0">{{value.nextText}}</button>
     </div>
 </template>
 
@@ -26,6 +27,27 @@
 
     class Product extends Vue{
         @Prop() value;
+
+        update(){
+            this.$emit('update', this.value.nextCount);
+        }
+
+        observer = null;
+
+        /*mounted(){
+            this.observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        this.update();
+                    }
+                });
+            }, this.options);
+            this.observer.observe(this.$refs.target);
+        }
+
+        destroyed() {
+            this.observer.disconnect();
+        }*/
     }
 </script>
 

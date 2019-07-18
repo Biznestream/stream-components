@@ -5,12 +5,12 @@ import SAttributeEditor from './components/Attribute/SAttributeEditor';
 import SAttributesEditor from './components/Attribute/SAttributesEditor';
 import SProductFilter from './components/Filter/SProductFilter';
 import SDropdown from './components/Filter/SDropdown';
-import SProducts from './components/Filter/SProducts'
-import SProduct from './components/Filter/SProduct'
+import SProducts from './components/Filter/SProducts';
+import SProduct from './components/Filter/SProduct';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import { SliderPlugin } from "@syncfusion/ej2-vue-inputs";
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/default.css'
+import VueSlider from 'vue-slider-component';
+import 'vue-slider-component/theme/default.css';
 
 export {
   SAttributeTypeSelector,

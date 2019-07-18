@@ -18,7 +18,7 @@
         ></s-product-filter>
         <s-products
                 :value="products"
-                @update="loadMore"
+                @update="getProducts"
         >
         </s-products>
     </div>
@@ -44,7 +44,7 @@
                 attributes: {},
                 initialValues: [],
                 filterValues: [],
-                products: []
+                products: {}
             },
             methods: {
                 getFilterData(val){
@@ -61,21 +61,34 @@
                     }
                 },
                 getProducts(val){
+                    if(typeof val === 'number' && val === 0){
+                        return
+                    }
                     const obj = {
                       offset: 0,
                       section: 122761238,
                       section_id: 122761238
                     };
-                    if(val){
+                    if(val && typeof val === 'object'){
                         const requestParams = Object.assign(this.transformObject(val), obj);
                         axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/products?configuration_id=619', {
                             params: requestParams
                         })
                             .then(res => this.products = res.data.data)
                             .catch(error => console.error(error))
-                    } else{
-                        axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/products/?configuration_id=619&offset=0&section=122761238&section_id=122761238')
-                            .then(res => this.products = res.data.data)
+                    } else if (!val || val > 0) {
+                        val === 1 ? val = 24 : val;
+                        !val ? val = 0 : val;
+                        axios.get(`https://stapler-mieten.staplercenter-pieckert.de/api/products/?configuration_id=619&offset=${val}&section=122761238&section_id=122761238`)
+                            .then(res => {
+                                if(Object.keys(this.products).length === 0) {
+                                    this.products = res.data.data
+                                } else {
+                                    const {nextCount, products} = res.data.data;
+                                    this.products.nextCount = nextCount;
+                                    this.products.products = this.products.products.concat(products);
+                                }
+                            })
                             .catch(error => console.error(error))
                     }
                 },
@@ -97,17 +110,16 @@
                     }
                     return newData;
                 },
-                loadMore(val){
+                /*loadMore(val){
                     val === 1 ? val = 24 : val;
                     axios.get(`https://stapler-mieten.staplercenter-pieckert.de/api/products?configuration_id=619&offset=${val}&section=122761238&section_id=122761238`)
                         .then(res => {
-                            console.log(res.data.data);
                             const {nextCount, products} = res.data.data;
                             this.products.nextCount = nextCount;
                             this.products.products = this.products.products.concat(products);
                         })
                         .catch(error => console.error(error))
-                }
+                }*/
             },
             mounted () {
                 this.getFilterData();
