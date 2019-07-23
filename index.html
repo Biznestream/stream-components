@@ -6,25 +6,94 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Component Playground</title>
+    <link rel=stylesheet type=text/css href="https://www.fds-stapler.de/skin/FDS_new">
 </head>
 <body>
 
     <div id="app">
-        <s-product-filter
-                @input="getProducts"
-                @update="getFilterData"
-                :initial-values="initialValues"
-                :filter-values="filterValues"
-        ></s-product-filter>
-        <s-products
-                :value="products"
-                @update="getProducts"
-        >
-        </s-products>
+
+        <div class="section product-section">
+
+        <div class="product-filter-outer container" sticky-container>
+
+            <div v-if="sectionOptions">
+
+              <s-product-filter-container :title="sectionOptions.title"
+                                          :collapsed.sync="filterCollapsed"
+                                          :filters="sectionOptions.attributes"
+                                          v-model="filter" @input="getFilterData" v-sticky>
+
+                  <s-product-filter v-model="filter"
+                                    :options="sectionOptions"
+                                    :filters="sectionOptions.attributes"
+                                    :values="currentFilterValues"
+                                    :filter-count="filterCount"
+                      @input="getProducts"
+                      @filter="getFilterData"
+                  ></s-product-filter>
+
+              </s-product-filter-container>
+
+            </div>
+
+            <router-view></router-view>
+            <s-products
+                    :value="products"
+                    @update="getProducts"
+            >
+            </s-products>
+
+        </div>
+
+        </div>
+
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
     </div>
 
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="node_modules/vuex/dist/vuex.js"></script>
+    <script src="node_modules/vue-router/dist/vue-router.js"></script>
     <script src="node_modules/vue-class-component/dist/vue-class-component.js"></script>
     <script src="node_modules/axios/dist/axios.min.js"></script>
     <script src="node_modules/qs/dist/qs.js"></script>
@@ -38,13 +107,25 @@
     </script>
     <script src="index.js"></script>
     <script>
+        const routes = [
+            { path: '/', component: Vue.component('ProductsPage') },
+            { path: '/bar' }
+        ]
+        const router = new VueRouter({
+            routes
+        })
+
         var app = new Vue({
+            router,
             el: '#app',
             data: {
+                filterCollapsed: false,
+                filter: {},
+                sectionOptions: {},
                 attributes: {},
-                initialValues: [],
-                filterValues: [],
-                products: {}
+                currentFilterValues: [],
+                products: {},
+                filterCount: 0
             },
             methods: {
                 getFilterData(val){
@@ -52,11 +133,15 @@
                         axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?', {
                             params: this.transformObject(val)
                         })
-                            .then(res => this.filterValues = res.data.attributes)
+                            .then(res => {
+                                this.currentFilterValues = res.data.attributes;
+                            })
                             .catch(error => console.error(error))
                     } else {
                         axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?offset=0&section=122761238')
-                            .then(res => this.initialValues = res.data.attributes)
+                            .then(res => {
+                                this.sectionOptions = res.data
+                            })
                             .catch(error => console.error(error))
                     }
                 },
