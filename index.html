@@ -43,6 +43,10 @@
             >
             </s-products>
 
+            <s-product-tab
+            >
+            </s-product-tab>
+
         </div>
 
         </div>
@@ -110,10 +114,10 @@
         const routes = [
             { path: '/', component: Vue.component('ProductsPage') },
             { path: '/bar' }
-        ]
+        ];
         const router = new VueRouter({
             routes
-        })
+        });
 
         var app = new Vue({
             router,
