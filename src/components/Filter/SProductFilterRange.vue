@@ -63,9 +63,7 @@
 
     @Watch('value')
     switchCheckbox (newVal) {
-      if (!newVal) {
-        this.checked = false;
-      }
+      this.checked = newVal !== undefined;
     }
 
     vueSliderProcess = dotsPos => [

@@ -1,216 +1,112 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Component Playground</title>
-    <link rel=stylesheet type=text/css href="https://www.fds-stapler.de/skin/FDS_new">
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Component Playground</title>
+  <link rel=stylesheet type=text/css href="https://www.fds-stapler.de/skin/FDS_new">
 </head>
 <body>
 
-    <div id="app">
+<div id="app">
 
-        <div class="section product-section">
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
 
-        <div class="product-filter-outer container" sticky-container>
+  <products-section></products-section>
 
-            <div v-if="sectionOptions">
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+</div>
 
-              <s-product-filter-container :title="sectionOptions.title"
-                                          :collapsed.sync="filterCollapsed"
-                                          :filters="sectionOptions.attributes"
-                                          v-model="filter" @input="getFilterData" v-sticky>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script src="node_modules/vuex/dist/vuex.js"></script>
+<script src="node_modules/vue-router/dist/vue-router.js"></script>
+<script src="node_modules/vue-class-component/dist/vue-class-component.js"></script>
+<script src="node_modules/axios/dist/axios.min.js"></script>
+<script src="node_modules/qs/dist/qs.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/almond@0.3.3/almond.min.js"></script>
+<script>
+  var module = {};
+  define('vue', function () {
+    return Vue;
+  });
+  define('vuex', function () {
+    return Vuex;
+  });
+  define('vuetify', function () {
+    return Vuetify;
+  });
+  define('vue-class-component', function () {
+    return VueClassComponent;
+  });
+</script>
+<script src="index.js"></script>
+<script>
+  const routes = [
+    { path: '/', component: Vue.component('ProductsPage'), props: (route) => ({ query: route.query }) },
+    { path: '/bar' }
+  ]
+  const router = new VueRouter({
+    routes
+  })
 
-                  <s-product-filter v-model="filter"
-                                    :options="sectionOptions"
-                                    :filters="sectionOptions.attributes"
-                                    :values="currentFilterValues"
-                                    :filter-count="filterCount"
-                      @input="getProducts"
-                      @filter="getFilterData"
-                  ></s-product-filter>
-
-              </s-product-filter-container>
-
-            </div>
-
-            <router-view></router-view>
-            <s-products
-                    :value="products"
-                    @update="getProducts"
-            >
-            </s-products>
-
-        </div>
-
-        </div>
-
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-    </div>
-
-    <script src="node_modules/vue/dist/vue.js"></script>
-    <script src="node_modules/vuex/dist/vuex.js"></script>
-    <script src="node_modules/vue-router/dist/vue-router.js"></script>
-    <script src="node_modules/vue-class-component/dist/vue-class-component.js"></script>
-    <script src="node_modules/axios/dist/axios.min.js"></script>
-    <script src="node_modules/qs/dist/qs.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/almond@0.3.3/almond.min.js"></script>
-    <script>
-        var module = {};
-        define('vue', function () { return Vue; });
-        define('vuex', function () { return Vuex; });
-        define('vuetify', function () { return Vuetify; });
-        define('vue-class-component', function () { return VueClassComponent; });
-    </script>
-    <script src="index.js"></script>
-    <script>
-        const routes = [
-            { path: '/', component: Vue.component('ProductsPage') },
-            { path: '/bar' }
-        ]
-        const router = new VueRouter({
-            routes
-        })
-
-        var app = new Vue({
-            router,
-            el: '#app',
-            data: {
-                filterCollapsed: false,
-                filter: {},
-                sectionOptions: {},
-                attributes: {},
-                currentFilterValues: [],
-                products: {},
-                filterCount: 0
-            },
-            methods: {
-                getFilterData(val){
-                    if(val){
-                        axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?', {
-                            params: this.transformObject(val)
-                        })
-                            .then(res => {
-                                this.currentFilterValues = res.data.attributes;
-                            })
-                            .catch(error => console.error(error))
-                    } else {
-                        axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?offset=0&section=122761238')
-                            .then(res => {
-                                this.sectionOptions = res.data
-                            })
-                            .catch(error => console.error(error))
-                    }
-                },
-                getProducts(val){
-                    if(typeof val === 'number' && val === 0){
-                        return
-                    }
-                    const obj = {
-                      offset: 0,
-                      section: 122761238,
-                      section_id: 122761238
-                    };
-                    if(val && typeof val === 'object'){
-                        const requestParams = Object.assign(this.transformObject(val), obj);
-                        axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/products?configuration_id=619', {
-                            params: requestParams
-                        })
-                            .then(res => this.products = res.data.data)
-                            .catch(error => console.error(error))
-                    } else if (!val || val > 0) {
-                        val === 1 ? val = 24 : val;
-                        !val ? val = 0 : val;
-                        axios.get(`https://stapler-mieten.staplercenter-pieckert.de/api/products/?configuration_id=619&offset=${val}&section=122761238&section_id=122761238`)
-                            .then(res => {
-                                if(Object.keys(this.products).length === 0) {
-                                    this.products = res.data.data
-                                } else {
-                                    const {nextCount, products} = res.data.data;
-                                    this.products.nextCount = nextCount;
-                                    this.products.products = this.products.products.concat(products);
-                                }
-                            })
-                            .catch(error => console.error(error))
-                    }
-                },
-                transformObject(obj){
-                    const newKeys = Object.keys(obj).map(item => {
-                        return `f${item}`
-                    });
-                    const oldKeys = Object.keys(obj);
-                    let newData = {};
-                    for(let i in newKeys){
-                        newData[newKeys[i]] = obj[oldKeys[i]];
-                        obj[newKeys[i]] = obj[oldKeys[i]];
-                        delete obj[newKeys[i]]
-                    }
-                    for(const key in newData){
-                        if (Array.isArray(newData[key])) {
-                            newData[key] = newData[key][0] + '-' + newData[key][1]
-                        }
-                    }
-                    return newData;
-                },
-                /*loadMore(val){
-                    val === 1 ? val = 24 : val;
-                    axios.get(`https://stapler-mieten.staplercenter-pieckert.de/api/products?configuration_id=619&offset=${val}&section=122761238&section_id=122761238`)
-                        .then(res => {
-                            const {nextCount, products} = res.data.data;
-                            this.products.nextCount = nextCount;
-                            this.products.products = this.products.products.concat(products);
-                        })
-                        .catch(error => console.error(error))
-                }*/
-            },
-            mounted () {
-                this.getFilterData();
-                this.getProducts();
-            }
-        });
-    </script>
+  var app = new Vue({
+    router,
+    el: '#app',
+    data: {
+    },
+    methods: {
+    },
+  });
+</script>
 </body>
 </html>
