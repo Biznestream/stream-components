@@ -37,11 +37,11 @@
             </div>
 
             <router-view></router-view>
-            <s-products
-                    :value="products"
-                    @update="getProducts"
+
+            <s-product-tab
+                :value="attributes"
             >
-            </s-products>
+            </s-product-tab>
 
         </div>
 
@@ -195,20 +195,15 @@
                     }
                     return newData;
                 },
-                /*loadMore(val){
-                    val === 1 ? val = 24 : val;
-                    axios.get(`https://stapler-mieten.staplercenter-pieckert.de/api/products?configuration_id=619&offset=${val}&section=122761238&section_id=122761238`)
-                        .then(res => {
-                            const {nextCount, products} = res.data.data;
-                            this.products.nextCount = nextCount;
-                            this.products.products = this.products.products.concat(products);
-                        })
-                        .catch(error => console.error(error))
-                }*/
+                async getAttributes(){
+                    const { data } = await axios.get('https://www.fds-stapler.de/api/configuration/1991/filter?offset=0&section=122814641');
+                    this.attributes = data;
+                }
             },
             mounted () {
                 this.getFilterData();
                 this.getProducts();
+                this.getAttributes();
             }
         });
     </script>
