@@ -55,7 +55,6 @@
         </div>
       </div>
     </div>
-    {{currentFilter}}
   </div>
 </template>
 

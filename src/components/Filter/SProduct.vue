@@ -1,5 +1,5 @@
 <template>
-    <div class="product-wrap col-lg-4">
+    <div class="product-wrap">
         <div class="product-attributes-container flex wrap justify-between">
             <p style="margin-left: -10px">Name: {{product.title}}</p>
             <div class="attribute">

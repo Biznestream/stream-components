@@ -7,7 +7,6 @@ import SProductFilter from './components/Filter/SProductFilter';
 import SProducts from './components/Filter/SProducts';
 import SProduct from './components/Filter/SProduct';
 import SProductFilterContainer from './components/Filter/SProductFilterContainer';
-import SProductTab from './components/Filter/SProductTab';
 // import CKEditor from '@ckeditor/ckeditor5-vue';
 import Sticky from 'vue-sticky-directive';
 import ProductsPage from './components/Pages/ProductsPage';
@@ -21,8 +20,7 @@ export {
   SProductFilter,
   SProducts,
   SProduct,
-  ProductsPage,
-  SProductTab
+  ProductsPage
 };
 
 export default function install(Vue) {
@@ -36,7 +34,6 @@ export default function install(Vue) {
   Vue.component('SProductFilter', SProductFilter);
   Vue.component('SProducts', SProducts);
   Vue.component('SProduct', SProduct);
-  Vue.component('SProductTab', SProductTab);
   Vue.component('SProductFilterContainer', SProductFilterContainer);
   Vue.component('ProductsPage', ProductsPage);
 }
