@@ -92,8 +92,8 @@
 <script src="index.js"></script>
 <script>
   const routes = [
-    { path: '/', component: Vue.component('ProductsPage'), props: (route) => ({ query: route.query }) },
-    { path: '/bar' }
+    { name: 'page', path: '/', alias: '/:url', component: Vue.component('ProductsPage'), props: (route) => ({ query: route.query }) },
+    { name: 'product', path: '/:url/:productName-:productId', component: Vue.component('ProductPage') }
   ]
   const router = new VueRouter({
     routes

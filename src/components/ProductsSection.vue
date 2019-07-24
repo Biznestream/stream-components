@@ -4,12 +4,12 @@
 
     <div class="product-filter-outer container" sticky-container>
 
-      <div v-if="sectionOptions">
+      <div v-sticky>
 
         <s-product-filter-container :title="sectionOptions.title"
                                     :collapsed.sync="filterCollapsed"
                                     :filters="sectionOptions.attributes"
-                                    v-model="filter" @input="onFilterUpdate($event, false)" v-sticky ref="stickyEl">
+                                    v-model="filter" @input="onFilterUpdate($event, false)">
 
           <s-product-filter v-model="filter"
                             :options="sectionOptions"
@@ -22,6 +22,7 @@
 
         </s-product-filter-container>
 
+        <s-product-navigation></s-product-navigation>
       </div>
 
       <div class="current-product-view list-view-null">
@@ -35,11 +36,13 @@
 
 <script>
   import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
+  import SProductNavigation from './Filter/SProductNavigation';
   import { filterToParams, qsToFilter } from '../helpers/common';
 
   export default @Component({
     name: "ProductsSection",
     components: {
+      SProductNavigation
     }
   })
   class ProductsSection extends Vue {
@@ -64,6 +67,7 @@
       const query = filterToParams(val, this.sectionOptions.attributes, this.filter, true);
 
       const newRoute = { ...this.$route };
+      newRoute.name = 'page';
       newRoute.query = query;
       this.$router.push(newRoute);
     }

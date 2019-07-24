@@ -8,6 +8,7 @@ import SProductFilterContainer from './components/Filter/SProductFilterContainer
 import ProductsSection from './components/ProductsSection';
 // import CKEditor from '@ckeditor/ckeditor5-vue';
 import Sticky from 'vue-sticky-directive';
+import ProductPage from './components/Pages/ProductPage';
 import ProductsPage from './components/Pages/ProductsPage';
 
 export {
@@ -17,6 +18,7 @@ export {
   // SAttributesEditor,
   SProductFilterContainer,
   SProductFilter,
+  ProductPage,
   ProductsPage,
   ProductsSection
 };
@@ -31,6 +33,7 @@ export default function install(Vue) {
   // Vue.component('SAttributesEditor', SAttributesEditor);
   Vue.component('SProductFilter', SProductFilter);
   Vue.component('SProductFilterContainer', SProductFilterContainer);
+  Vue.component('ProductPage', ProductPage);
   Vue.component('ProductsPage', ProductsPage);
   Vue.component('ProductsSection', ProductsSection);
 }

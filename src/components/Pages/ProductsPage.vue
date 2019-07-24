@@ -1,30 +1,6 @@
 <template>
   <div :class="`view-${viewStyle}`">
 
-
-    <div class="btn-toolbar" role="toolbar">
-      <!--{% if productPage.productIndex %}
-      <div class="btn-group btn-group-text">
-        {{productPage.productIndex}}/{{productPage.productsCount}}
-      </div>
-      {% endif %}-->
-      <div class="btn-group btn-group btn-group-back" role="group">
-        <a href="" id="productPageBackButton" type="button" class="btn btn-primary">
-          <span class="glyphicon glyphicon-backward"></span>
-        </a>
-      </div>
-      <div class="btn-group btn-group btn-group-back" role="group">
-        <a class="btn btn-primary">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-        </a>
-      </div>
-      <div class="btn-group btn-group" role="group">
-        <a class="btn btn-primary">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-        </a>
-      </div>
-    </div>
-
     <template v-if="viewStyle != 'table'">
       <div infinite-scroll="loadMore()" infinite-scroll-distance="1" infinite-scroll-disabled='current.infiniteScrollDisabled || loading || loaded'>
         <template v-for="product, index in products">
@@ -66,7 +42,7 @@
     section = {};
 
     mounted () {
-      console.info(this.query);
+      console.info(this.$route)
       this.getProducts();
     }
 

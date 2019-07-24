@@ -1,6 +1,6 @@
 <template>
 <div class="product-item">
-  <span ng-click="goto(product.url)" style="cursor: pointer" class="thumbnail">
+  <span @click="openProduct(product.url)" style="cursor: pointer" class="thumbnail">
     <div class="product-image img-overlay img-overlay-container">
       <div class="overlay main-btn">
         <div class="btn btn-default" ng-if="product.url">
@@ -51,5 +51,12 @@
 
         section = {};
 
+        openProduct(url) {
+          const { route } = this.$router.resolve(url);
+          const newRoute = { ...route };
+          console.info(newRoute);
+          newRoute.query = this.$route.query;
+          this.$router.push(newRoute);
+        }
     }
 </script>
