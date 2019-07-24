@@ -4,7 +4,11 @@
         <div class="row">
             <div class="product-image col-lg-4 col-md-4 col-xs-12">
                 <img v-for="(item, index) in images" @click="imageIndex = index" :src="item.image" :key="item.id" alt="image">
-                <vue-gallery :images="images" :index="imageIndex" @close="index = null"></vue-gallery>
+                <vue-pure-lightbox
+                        style="width: 20em"
+                        thumbnail="https://picsum.photos/id/0/600/450"
+                        :images="images"
+                ></vue-pure-lightbox>
             </div>
             <div class="product-tab col-lg-8 col-md-8 col-xs-12">
                 <!--<ul class="accordion panel-group">
@@ -38,15 +42,15 @@
 </template>
 
 <script>
+    import VuePureLightbox from 'vue-pure-lightbox'
     import {Vue, Prop, Component} from 'vue-property-decorator';
-    import SProductAttribute from '../Product/SProductAttribute';
-    import VueGallery from 'vue-gallery';
+    import SProductAttribute from './SProductAttribute';
 
     export default @Component({
         name: "SProductTab",
         components: {
             SProductAttribute,
-            VueGallery
+            VuePureLightbox
         }
     })
 
@@ -65,6 +69,12 @@
         }
 
         images = [
+            'https://picsum.photos/id/0/600/450',
+            'https://picsum.photos/id/17/600/450',
+            'https://picsum.photos/id/7/600/450',
+        ]
+
+        /*images = [
             {
                 id: 1,
                 name: 'notepad',
@@ -80,7 +90,7 @@
                 name: 'meeting',
                 image: 'https://picsum.photos/id/7/600/450'
             }
-        ]
+        ]*/
     }
 </script>
 
