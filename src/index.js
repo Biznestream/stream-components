@@ -4,8 +4,10 @@ import Vue from 'vue';
 // import SAttributeEditor from './components/Attribute/SAttributeEditor';
 // import SAttributesEditor from './components/Attribute/SAttributesEditor';
 import SProductFilter from './components/Filter/SProductFilter';
+import SProduct from './components/Filter/SProduct';
 import SProductFilterContainer from './components/Filter/SProductFilterContainer';
-import ProductsSection from './components/ProductsSection';
+import SProductTab from './components/Filter/SProductTab';
+import SProductAttribute from './components/Product/SProductAttribute';
 // import CKEditor from '@ckeditor/ckeditor5-vue';
 import Sticky from 'vue-sticky-directive';
 import ProductPage from './components/Pages/ProductPage';
@@ -20,7 +22,8 @@ export {
   SProductFilter,
   ProductPage,
   ProductsPage,
-  ProductsSection
+  SProductTab,
+  SProductAttribute
 };
 
 export default function install(Vue) {
@@ -32,10 +35,12 @@ export default function install(Vue) {
   // Vue.component('SAttributeEditor', SAttributeEditor);
   // Vue.component('SAttributesEditor', SAttributesEditor);
   Vue.component('SProductFilter', SProductFilter);
+  Vue.component('SProduct', SProduct);
+  Vue.component('SProductTab', SProductTab);
   Vue.component('SProductFilterContainer', SProductFilterContainer);
   Vue.component('ProductPage', ProductPage);
   Vue.component('ProductsPage', ProductsPage);
-  Vue.component('ProductsSection', ProductsSection);
+  Vue.component('SProductAttribute', SProductAttribute);
 }
 install.version = '__VERSION__';
 

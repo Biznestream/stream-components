@@ -29,7 +29,7 @@
         <template v-else>
           <span class="tooltipped tooltipped-n" :aria-label="attribute.value">
             <span class="text-ellipsis">
-              <span v-html="attribute.value.replace(/\n/g,'<br>')"></span>
+              <!--<span v-html="attribute.value.replace(/\n/g,'<br>')"></span>-->
               <template v-if="attribute.suffix">&nbsp;{{attribute.suffix}}</template>
             </span>
           </span>
