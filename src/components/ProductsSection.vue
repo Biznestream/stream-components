@@ -26,7 +26,7 @@
       </div>
 
       <div class="current-product-view list-view-null">
-      <router-view></router-view>
+        <router-view></router-view>
       </div>
     </div>
 

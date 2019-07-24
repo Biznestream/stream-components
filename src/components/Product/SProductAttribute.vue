@@ -27,9 +27,9 @@
           <a :href="attribute.link">{{attribute.value}}</a>
         </template>
         <template v-else>
-          <span class="tooltipped tooltipped-n" :aria-label="attribute.value">
+          <span class="tooltipped tooltipped-n" :aria-label="attribute.value" v-if="attribute.value">
             <span class="text-ellipsis">
-              <!--<span v-html="attribute.value.replace(/\n/g,'<br>')"></span>-->
+              <span v-html="('' + attribute.value).replace(/\n/g,'<br>')"></span>
               <template v-if="attribute.suffix">&nbsp;{{attribute.suffix}}</template>
             </span>
           </span>

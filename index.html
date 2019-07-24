@@ -12,84 +12,60 @@
 
     <div id="app">
 
-        <div class="section product-section">
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
 
-        <div class="product-filter-outer container" sticky-container>
+  <products-section></products-section>
 
-            <div v-if="sectionOptions">
-
-              <s-product-filter-container :title="sectionOptions.title"
-                                          :collapsed.sync="filterCollapsed"
-                                          :filters="sectionOptions.attributes"
-                                          v-model="filter" @input="getFilterData" v-sticky>
-
-                  <s-product-filter v-model="filter"
-                                    :options="sectionOptions"
-                                    :filters="sectionOptions.attributes"
-                                    :values="currentFilterValues"
-                                    :filter-count="filterCount"
-                      @input="getProducts"
-                      @filter="getFilterData"
-                  ></s-product-filter>
-
-              </s-product-filter-container>
-
-            </div>
-
-            <router-view></router-view>
-
-            <s-product-tab
-                :value="attributes"
-            >
-            </s-product-tab>
-
-        </div>
-
-        </div>
-
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-    </div>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+</div>
 
 <script src="node_modules/vue/dist/vue.js"></script>
 <script src="node_modules/vuex/dist/vuex.js"></script>

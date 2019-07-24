@@ -6,9 +6,9 @@ import Vue from 'vue';
 import SProductFilter from './components/Filter/SProductFilter';
 import SProduct from './components/Filter/SProduct';
 import SProductFilterContainer from './components/Filter/SProductFilterContainer';
-import SProductTab from './components/Product/SProductTab';
 import SProductAttribute from './components/Product/SProductAttribute';
 import Lightbox from 'vue-easy-lightbox';
+import ProductsSection from './components/ProductsSection';
 // import CKEditor from '@ckeditor/ckeditor5-vue';
 import Sticky from 'vue-sticky-directive';
 import ProductPage from './components/Pages/ProductPage';
@@ -23,8 +23,8 @@ export {
   SProductFilter,
   ProductPage,
   ProductsPage,
-  SProductTab,
-  SProductAttribute
+  SProductAttribute,
+  ProductsSection
 };
 
 export default function install(Vue) {
@@ -37,11 +37,11 @@ export default function install(Vue) {
   // Vue.component('SAttributesEditor', SAttributesEditor);
   Vue.component('SProductFilter', SProductFilter);
   Vue.component('SProduct', SProduct);
-  Vue.component('SProductTab', SProductTab);
   Vue.component('SProductFilterContainer', SProductFilterContainer);
   Vue.component('ProductPage', ProductPage);
   Vue.component('ProductsPage', ProductsPage);
   Vue.component('SProductAttribute', SProductAttribute);
+  Vue.component('ProductsSection', ProductsSection);
 }
 install.version = '__VERSION__';
 
