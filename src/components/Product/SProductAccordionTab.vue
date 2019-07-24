@@ -1,13 +1,12 @@
 <template>
 
-  <div class="panel panel-default open" ng-class="{'open': localCurrent.tabs[1]}"
-       is-open="localCurrent.tabs[1]">
+  <div class="panel panel-default open">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <a href="" class="accordion-toggle" ng-click="toggleOpen()" accordion-transclude="heading"><span>{{tab.title}}</span></a>
+        <a href="" class="accordion-toggle" @click.prevent="toggleOpen" accordion-transclude="heading"><span>{{tab.title}}</span></a>
       </h4>
     </div>
-    <div class="panel-collapse collapse in">
+    <div ref="panel" class="panel-collapse collapse" :class="{in: active}">
       <div class="panel-body">
         <div class="row dl-leaders">
           <s-product-attribute show-title
@@ -31,5 +30,10 @@
 
   class SProductAccordion extends Vue {
     @Prop() tab;
+    @Prop() active;
+
+    toggleOpen(){
+      this.$emit('toggleTab')
+    }
   }
 </script>

@@ -25,7 +25,13 @@
         </div>
         <div class="col-lg-8 col-md-8 col-xs-12">
           <s-product-accordion>
-            <s-product-accordion-tab :tab="tab" v-for="(tab, index) in product.tabs" :key="index"></s-product-accordion-tab>
+            <s-product-accordion-tab
+                    :tab="tab"
+                    v-for="(tab, index) in product.tabs"
+                    :active="index === activeIndex"
+                    :key="index"
+                    @toggleTab="toggle(index)"
+            ></s-product-accordion-tab>
           </s-product-accordion>
           <!--<accordion class="accordion-heading-full product-attributes">-->
           <!--</accordion>-->
@@ -66,7 +72,8 @@
             "type": "char",
             "format": "",
             "value": "Gegengewichtstapler"
-          }, {
+          },
+            {
             "id": 13372,
             "category": 443,
             "name": "tragkraft",
@@ -75,11 +82,43 @@
             "type": "number",
             "format": "",
             "value": 123
-          }
-          ]
+          }]
+        },
+        {
+          title: 'Mietgerät-Schnellinfo',
+          attributes: [{
+            "id": 3458,
+            "category": 443,
+            "name": "engine_type",
+            "title": "Stapler Typ",
+            "suffix": "",
+            "type": "char",
+            "format": "",
+            "value": "Gegengewichtstapler"
+          },
+            {
+            "id": 12172,
+            "category": 443,
+            "name": "tragkraft",
+            "title": "Tragkraft",
+            "suffix": "kg",
+            "type": "number",
+            "format": "",
+            "value": 123
+          }]
         }
       ]
     };
+
+    activeIndex = 0;
+
+    toggle(index){
+      if(this.activeIndex === index){
+        this.activeIndex = null
+      } else {
+        this.activeIndex = index;
+      }
+    }
 
     mounted () {
       console.info(this.$route)

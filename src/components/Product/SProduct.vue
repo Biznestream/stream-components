@@ -23,7 +23,7 @@
       </div>
       <div class="product-attributes-container">
         <div class="product-attributes">
-          <s-product-attribute show-title v-for="attribute in product.attributes" v-if="attribute.value !== null" :attribute="attribute"></s-product-attribute>
+          <s-product-attribute show-title v-for="(attribute, index) in product.attributes" :key="index" v-if="attribute.value !== null" :attribute="attribute"></s-product-attribute>
 
           <div class="btn btn-primary visible-xs visible-sm btn-details">
             <span>{{section.button_caption || 'Details'}}</span>
