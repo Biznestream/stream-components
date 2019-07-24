@@ -15,7 +15,6 @@
                   :options="attribute"
                   :values="currentData(attribute.name)"
                   :value="currentFilter[attribute.name]"></s-product-filter-range>
-
             </template>
             <template v-else>
 

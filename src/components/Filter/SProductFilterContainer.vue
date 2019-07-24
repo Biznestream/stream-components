@@ -20,7 +20,7 @@
 </template>
 
 <script>
-  import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
+  import { Vue, Prop, Component } from 'vue-property-decorator';
 
   export default @Component({
     name: "SProductFilterContainer",

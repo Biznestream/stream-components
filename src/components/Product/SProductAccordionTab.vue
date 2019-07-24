@@ -7,20 +7,24 @@
       </h4>
     </div>
     <div ref="panel" class="panel-collapse collapse" :class="{in: active}">
-      <div class="panel-body">
-        <div class="row dl-leaders">
-          <s-product-attribute show-title
-              v-for="(item, index) in tab.attributes" :key="index"
-              :attribute="item"></s-product-attribute>
+      <transition name="slide-fade">
+        <div class="panel-body" v-if="active">
+          <div class="row dl-leaders">
+            <s-product-attribute show-title
+                                 v-for="(item, index) in tab.attributes" :key="index"
+                                 :attribute="item"
+            >
+            </s-product-attribute>
+          </div>
         </div>
-      </div>
+      </transition>
     </div>
   </div>
 
 </template>
 
 <script>
-  import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
+  import { Vue, Prop, Component } from 'vue-property-decorator';
 
   export default @Component({
     name: "SProductAccordion",
@@ -33,7 +37,40 @@
     @Prop() active;
 
     toggleOpen(){
-      this.$emit('toggleTab')
+      this.$emit('toggleTab');
     }
   }
 </script>
+
+<style lang="scss">
+
+  .panel-collapse{
+    max-height: 100px;
+    height: auto;
+    overflow: hidden;
+  }
+
+  .slide-fade-enter-active {
+    transition: all 1s ease;
+  }
+
+  .slide-fade-leave-active {
+    transition: all 1s ease;
+  }
+
+  .slide-fade-enter {
+    height: 0;
+  }
+
+  .slide-fade-enter-to {
+
+  }
+
+  .slide-fade-leave {
+  }
+
+  .slide-fade-leave-to {
+    max-height: 0;
+  }
+
+</style>
