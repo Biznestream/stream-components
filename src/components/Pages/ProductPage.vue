@@ -40,14 +40,12 @@
 
 <script>
   import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
-  import SProductTab from '../Product/SProductTab';
   import SProductAccordion from '../Product/SProductAccordion';
   import SProductAccordionTab from '../Product/SProductAccordionTab';
 
   export default @Component({
     name: "ProductPage",
     components: {
-      SProductTab,
       SProductAccordion,
       SProductAccordionTab
     }
