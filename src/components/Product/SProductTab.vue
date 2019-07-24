@@ -42,15 +42,13 @@
 </template>
 
 <script>
-    import VuePureLightbox from 'vue-pure-lightbox'
     import {Vue, Prop, Component} from 'vue-property-decorator';
     import SProductAttribute from './SProductAttribute';
 
     export default @Component({
         name: "SProductTab",
         components: {
-            SProductAttribute,
-            VuePureLightbox
+            SProductAttribute
         }
     })
 
