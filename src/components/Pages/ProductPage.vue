@@ -6,6 +6,7 @@
                 <div class="col-lg-4 col-md-4 col-xs-12" bz-gallery="" itemscope="" itemtype="http://schema.org/ImageGallery">
                     <s-product-thumbnail
                             :thumbnail="thumbnail"
+                            :options="images"
                     >
                     </s-product-thumbnail>
                 </div>
@@ -111,15 +112,15 @@
         images = [
             {
                 id: 1,
-                image: 'https://www.fds-stapler.de/image/243781/Gegengewichtstapler+ECB16+18.jpg'
+                src: 'https://www.fds-stapler.de/image/243781/Gegengewichtstapler+ECB16+18.jpg'
             },
             {
                 id: 2,
-                image: 'https://www.fds-stapler.de/image/108313/GC15S-5-doosan.jpg'
+                src: 'https://www.fds-stapler.de/image/108313/GC15S-5-doosan.jpg'
             },
             {
                 id: 3,
-                image: 'https://www.fds-stapler.de/image/240187/GC15S-5.jpg'
+                src: 'https://www.fds-stapler.de/image/240187/GC15S-5.jpg'
             }
         ];
 

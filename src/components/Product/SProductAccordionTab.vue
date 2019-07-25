@@ -7,12 +7,13 @@
       </h4>
     </div>
     <div ref="panel" class="panel-collapse collapse" :class="{in: active}">
-      <transition name="slide-fade">
+      <transition>
         <div class="panel-body" v-if="active">
           <div class="row dl-leaders">
-            <s-product-attribute show-title
-                                 v-for="(item, index) in tab.attributes" :key="index"
-                                 :attribute="item"
+            <s-product-attribute
+                    show-title
+                    v-for="(item, index) in tab.attributes" :key="index"
+                    :attribute="item"
             >
             </s-product-attribute>
           </div>
@@ -44,33 +45,15 @@
 
 <style lang="scss">
 
-  .panel-collapse{
-    max-height: 100px;
-    height: auto;
+  .panel-body{
+    transition: all .9s ease;
+    height: 100px;
     overflow: hidden;
   }
 
-  .slide-fade-enter-active {
-    transition: all 1s ease;
-  }
-
-  .slide-fade-leave-active {
-    transition: all 1s ease;
-  }
-
-  .slide-fade-enter {
+  .panel-body.v-enter, .panel-body.v-leave {
     height: 0;
-  }
-
-  .slide-fade-enter-to {
-
-  }
-
-  .slide-fade-leave {
-  }
-
-  .slide-fade-leave-to {
-    max-height: 0;
+    opacity: 0;
   }
 
 </style>

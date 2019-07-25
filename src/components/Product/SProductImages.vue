@@ -1,8 +1,8 @@
 <template>
     <ul class="list-product-images list-small-images list-unstyled">
         <li v-for="(item, index) in options" :key="item.id">
-            <a class="img-overlay" href="" @click.prevent="selectImage(item.image, index)" :class="{active: index === selectedIndex}">
-                <img :src="item.image" alt="Doosan GC15S-5" title="Doosan Treibgasstapler GC15S-5 neu kaufen" class="img-responsive">
+            <a class="img-overlay" href="" @click.prevent="selectImage(item.src, index)" :class="{active: index === selectedIndex}">
+                <img :src="item.src" alt="Doosan GC15S-5" title="Doosan Treibgasstapler GC15S-5 neu kaufen" class="img-responsive">
             </a>
         </li>
     </ul>
