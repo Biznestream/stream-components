@@ -1,59 +1,69 @@
 <template>
 
-  <div class="panel panel-default open">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a href="" class="accordion-toggle" @click.prevent="toggleOpen" accordion-transclude="heading"><span>{{tab.title}}</span></a>
-      </h4>
-    </div>
-    <div ref="panel" class="panel-collapse collapse" :class="{in: active}">
-      <transition>
-        <div class="panel-body" v-if="active">
-          <div class="row dl-leaders">
-            <s-product-attribute
-                    show-title
-                    v-for="(item, index) in tab.attributes" :key="index"
-                    :attribute="item"
-            >
-            </s-product-attribute>
-          </div>
+    <div class="panel panel-default" :class="{open: active}">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a href="" class="accordion-toggle" @click.prevent="toggleOpen" accordion-transclude="heading"><span>{{tab.title}}</span></a>
+            </h4>
         </div>
-      </transition>
+        <transition
+                name="slide"
+        >
+            <div ref="panel" v-if="active" class="panel-collapse collapse" :class="{in: active}">
+                <div class="panel-body">
+                    <div class="row dl-leaders">
+                        <s-product-attribute
+                                show-title
+                                v-for="(item, index) in tab.attributes" :key="index"
+                                :attribute="item"
+                        >
+                        </s-product-attribute>
+                    </div>
+                </div>
+            </div>
+        </transition>
     </div>
-  </div>
 
 </template>
 
 <script>
-  import { Vue, Prop, Component } from 'vue-property-decorator';
+    import { Vue, Prop, Component } from 'vue-property-decorator';
 
-  export default @Component({
-    name: "SProductAccordion",
-    components: {
+    export default @Component({
+        name: "SProductAccordion",
+        components: {
+        }
+    })
+
+    class SProductAccordion extends Vue {
+        @Prop() tab;
+        @Prop() active;
+
+        toggleOpen(){
+            this.$emit('toggleTab');
+        }
     }
-  })
-
-  class SProductAccordion extends Vue {
-    @Prop() tab;
-    @Prop() active;
-
-    toggleOpen(){
-      this.$emit('toggleTab');
-    }
-  }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
-  .panel-body{
-    transition: all .9s ease;
-    height: 100px;
-    overflow: hidden;
-  }
+    .slide-enter-active, .slide-leave-active  {
+        transition: all 750ms ease-in-out;
+    }
 
-  .panel-body.v-enter, .panel-body.v-leave {
-    height: 0;
-    opacity: 0;
-  }
+    .slide-leave{
+
+    }
+
+    .slide-enter-to, .slide-leave {
+        max-height: 100vh;
+        overflow: hidden;
+    }
+
+    .slide-enter, .slide-leave-to {
+        overflow: hidden;
+        max-height: 0;
+        height: auto;
+    }
 
 </style>

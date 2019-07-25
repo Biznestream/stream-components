@@ -59,7 +59,8 @@
             tabs: [
                 {
                     title: 'Modellspezifikationen',
-                    attributes: [{
+                    attributes: [
+                        {
                         "id": 9338,
                         "category": 443,
                         "name": "engine_type",
@@ -68,7 +69,7 @@
                         "type": "char",
                         "format": "",
                         "value": "Gegengewichtstapler"
-                    },
+                        },
                         {
                             "id": 13372,
                             "category": 443,
@@ -78,7 +79,68 @@
                             "type": "number",
                             "format": "",
                             "value": 123
-                        }]
+                        },
+                        {
+                            "id": 928,
+                            "category": 443,
+                            "name": "engine_type",
+                            "title": "Stapler Typ",
+                            "suffix": "",
+                            "type": "char",
+                            "format": "",
+                            "value": "Gegengewichtstapler"
+                        },
+                        {
+                            "id": 1334472,
+                            "category": 443,
+                            "name": "tragkraft",
+                            "title": "Tragkraft",
+                            "suffix": "kg",
+                            "type": "number",
+                            "format": "",
+                            "value": 123
+                        },
+                        {
+                            "id": 9338,
+                            "category": 443,
+                            "name": "engine_type",
+                            "title": "Stapler Typ",
+                            "suffix": "",
+                            "type": "char",
+                            "format": "",
+                            "value": "Gegengewichtstapler"
+                        },
+                        {
+                            "id": 13372,
+                            "category": 443,
+                            "name": "tragkraft",
+                            "title": "Tragkraft",
+                            "suffix": "kg",
+                            "type": "number",
+                            "format": "",
+                            "value": 123
+                        },
+                        {
+                            "id": 9218,
+                            "category": 443,
+                            "name": "engine_type",
+                            "title": "Stapler Typ",
+                            "suffix": "",
+                            "type": "char",
+                            "format": "",
+                            "value": "Gegengewichtstapler"
+                        },
+                        {
+                            "id": 12,
+                            "category": 443,
+                            "name": "tragkraft",
+                            "title": "Tragkraft",
+                            "suffix": "kg",
+                            "type": "number",
+                            "format": "",
+                            "value": 123
+                        }
+                    ]
                 },
                 {
                     title: 'Mietgerät-Schnellinfo',
