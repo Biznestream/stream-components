@@ -7,7 +7,10 @@
             </h4>
         </div>
         <transition
-                name="slide"
+                name="expand"
+                @enter="enter"
+                @after-enter="afterEnter"
+                @leave="leave"
         >
             <div ref="panel" v-if="active" class="panel-collapse collapse" :class="{in: active}">
                 <div class="panel-body">
@@ -42,28 +45,58 @@
         toggleOpen(){
             this.$emit('toggleTab');
         }
+
+        enter(element) {
+            const width = getComputedStyle(element).width;
+
+            element.style.width = width;
+            element.style.position = 'absolute';
+            element.style.visibility = 'hidden';
+            element.style.height = 'auto';
+
+            const height = getComputedStyle(element).height;
+
+            element.style.width = null;
+            element.style.position = null;
+            element.style.visibility = null;
+            element.style.height = 0;
+
+            getComputedStyle(element).height;
+
+            setTimeout(() => {
+                element.style.height = height;
+            });
+        }
+
+        afterEnter(element) {
+            element.style.height = 'auto';
+        }
+
+        leave(element) {
+            const height = getComputedStyle(element).height;
+
+            element.style.height = height;
+
+            getComputedStyle(element).height;
+
+            setTimeout(() => {
+                element.style.height = 0;
+            });
+        }
     }
 </script>
 
 <style lang="scss" scoped>
 
-    .slide-enter-active, .slide-leave-active  {
-        transition: all 750ms ease-in-out;
-    }
-
-    .slide-leave{
-
-    }
-
-    .slide-enter-to, .slide-leave {
-        max-height: 100vh;
+    .expand-enter-active,
+    .expand-leave-active {
+        transition: height .6s ease-in-out;
         overflow: hidden;
     }
 
-    .slide-enter, .slide-leave-to {
-        overflow: hidden;
-        max-height: 0;
-        height: auto;
+    .expand-enter,
+    .expand-leave-to {
+        height: 0;
     }
 
 </style>
