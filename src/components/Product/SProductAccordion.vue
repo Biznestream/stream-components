@@ -1,7 +1,7 @@
 <template>
   <div class="accordion-heading-full product-attributes">
     <div class="panel-group">
-      <slot></slot>
+      <slot name="tab" :toggleTest="toggleTab" :activeIndex="activeIndex"></slot>
     </div>
   </div>
 </template>
@@ -16,5 +16,14 @@
   })
   class SProductAccordion extends Vue {
 
+    activeIndex = 0;
+
+    toggleTab(index){
+      if(this.activeIndex === index){
+        this.activeIndex = null
+      } else {
+        this.activeIndex = index;
+      }
+    }
   }
 </script>

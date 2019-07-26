@@ -12,18 +12,20 @@
                 </div>
                 <div class="col-lg-8 col-md-8 col-xs-12">
                     <s-product-images
-                            :options="images"
+                            :images="images"
                             @selectedImage="onImageSelect"
                     >
                     </s-product-images>
                     <s-product-accordion>
-                        <s-product-accordion-tab
-                                :tab="tab"
-                                v-for="(tab, index) in product.tabs"
-                                :active="index === activeIndex"
-                                :key="index"
-                                @toggleTab="toggle(index)"
-                        ></s-product-accordion-tab>
+                        <template slot="tab" slot-scope="{ toggleTest, activeIndex }">
+                            <s-product-accordion-tab
+                                    :tab="tab"
+                                    v-for="(tab, index) in product.tabs"
+                                    :key="index"
+                                    :active="index === activeIndex"
+                                    @toggleTab="toggleTest(index)"
+                            ></s-product-accordion-tab>
+                        </template>
                     </s-product-accordion>
                     <!--<accordion class="accordion-heading-full product-attributes">-->
                     <!--</accordion>-->
@@ -168,7 +170,6 @@
             ]
         };
 
-        activeIndex = 0;
         thumbnail = 'https://www.fds-stapler.de/image/243781/Gegengewichtstapler+ECB16+18.jpg';
 
         images = [
@@ -188,14 +189,6 @@
 
         onImageSelect(image){
             this.thumbnail = image;
-        }
-
-        toggle(index){
-            if(this.activeIndex === index){
-                this.activeIndex = null
-            } else {
-                this.activeIndex = index;
-            }
         }
 
         mounted () {
