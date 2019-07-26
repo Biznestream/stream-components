@@ -10,6 +10,7 @@ import Sticky from 'vue-sticky-directive';
 import ProductPage from './components/Pages/ProductPage';
 import ProductsPage from './components/Pages/ProductsPage';
 import VueLazyLoad from 'vue-lazyload';
+import VueScrollTo from 'vue-scrollto';
 
 export {
   SProductFilterContainer,
@@ -25,6 +26,7 @@ export {
 export default function install(Vue) {
   Vue.use(Sticky);
   Vue.use(VueLazyLoad);
+  Vue.use(VueScrollTo);
 
   Vue.component('SProductFilter', SProductFilter);
   Vue.component('SProduct', SProduct);

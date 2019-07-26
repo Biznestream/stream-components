@@ -1,5 +1,5 @@
 <template>
-  <dl class="attribute has-value">
+  <dl class="attribute has-value" itemprop="additionalProperty" itemscope="" itemtype="http://schema.org/PropertyValue">
     <dt v-if="showTitle && attribute.title" class="text-ellipsis" :class="`type-${attribute.type}`">{{attribute.title}}</dt>
     <dd :class="`type-${attribute.type + (attribute.format == 'rich text' ? ' rich-html' : '')}`">
       <template v-if="attribute.type === 'boolean'">

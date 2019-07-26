@@ -90,13 +90,17 @@
 
     .expand-enter-active,
     .expand-leave-active {
-        transition: height .6s ease-in-out;
+        transition: height .4s;
         overflow: hidden;
     }
 
     .expand-enter,
     .expand-leave-to {
         height: 0;
+    }
+
+    a{
+        text-decoration: none;
     }
 
 </style>

@@ -2,7 +2,7 @@
 
   <div class="section product-section">
 
-    <div class="product-filter-outer container" sticky-container>
+    <div class="product-filter-outer container" sticky-container id="filter">
 
       <div v-sticky>
 

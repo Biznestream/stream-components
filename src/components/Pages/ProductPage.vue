@@ -16,7 +16,10 @@
                             @selectedImage="onImageSelect"
                     >
                     </s-product-images>
-                    <s-product-accordion>
+                    <s-product-accordion v-scroll-to="{
+                        el: '#filter',
+                        offset: 170
+                    }">
                         <template slot="tab" slot-scope="{ toggle, activeIndex }">
                             <s-product-accordion-tab
                                     :tab="tab"

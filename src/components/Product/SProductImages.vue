@@ -22,11 +22,7 @@
 
         selectImage(image, index){
             this.selectedIndex = index;
-            this.$emit('selectedImage', image)
+            this.$emit('selectedImage', image);
         }
     }
 </script>
-
-<style scoped>
-
-</style>
