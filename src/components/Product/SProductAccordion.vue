@@ -1,7 +1,7 @@
 <template>
   <div class="accordion-heading-full product-attributes">
     <div class="panel-group">
-      <slot name="tab" :toggleTest="toggleTab" :activeIndex="activeIndex"></slot>
+      <slot name="tab" :toggle="toggleTab" :activeIndex="activeIndex"></slot>
     </div>
   </div>
 </template>

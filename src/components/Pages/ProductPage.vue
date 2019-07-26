@@ -17,13 +17,13 @@
                     >
                     </s-product-images>
                     <s-product-accordion>
-                        <template slot="tab" slot-scope="{ toggleTest, activeIndex }">
+                        <template slot="tab" slot-scope="{ toggle, activeIndex }">
                             <s-product-accordion-tab
                                     :tab="tab"
                                     v-for="(tab, index) in product.tabs"
                                     :key="index"
                                     :active="index === activeIndex"
-                                    @toggleTab="toggleTest(index)"
+                                    @toggleTab="toggle(index)"
                             ></s-product-accordion-tab>
                         </template>
                     </s-product-accordion>
