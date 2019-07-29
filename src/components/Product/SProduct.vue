@@ -3,7 +3,7 @@
   <span @click="openProduct(product.url)" style="cursor: pointer" class="thumbnail">
     <div class="product-image img-overlay img-overlay-container">
       <div class="overlay main-btn">
-        <div class="btn btn-default" ng-if="product.url">
+        <div class="btn btn-default">
           <span>{{section.button_caption || 'Details'}}</span>
         </div>
       </div>

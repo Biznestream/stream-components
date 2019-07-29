@@ -77,16 +77,16 @@
         return axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?', {
           params: this.transformObject(val)
         })
-          .then(res => {
-            this.currentFilterValues = res.data.attributes;
-          })
-          .catch(error => console.error(error))
+                .then(res => {
+                  this.currentFilterValues = res.data.attributes;
+                })
+                .catch(error => console.error(error))
       } else {
         return axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?offset=0&section=122761238')
-          .then(res => {
-            this.sectionOptions = res.data
-          })
-          .catch(error => console.error(error))
+                .then(res => {
+                  this.sectionOptions = res.data
+                })
+                .catch(error => console.error(error))
       }
     }
 

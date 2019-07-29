@@ -46,6 +46,10 @@
             this.$emit('toggleTab');
         }
 
+        mounted(){
+
+        }
+
         enter(element) {
             const width = getComputedStyle(element).width;
 

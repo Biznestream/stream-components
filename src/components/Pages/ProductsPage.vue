@@ -2,17 +2,17 @@
   <div :class="`view-${viewStyle}`">
 
     <template v-if="viewStyle != 'table'">
-      <div infinite-scroll="loadMore()" infinite-scroll-distance="1" infinite-scroll-disabled='current.infiniteScrollDisabled || loading || loaded'>
+      <div>
         <template v-for="product, index in products">
           <s-product :product="product" :key="index"></s-product>
         </template>
-        <div class="col-xs-12 text-center" data-ng-if='loading'>
+        <div class="col-xs-12 text-center" v-if="loading">
           Loading data...
           <br/>
           <br/>
         </div>
-        <div class="col-xs-12" ng-if="!loaded && current.infiniteScrollDisabled && productsData.nextText">
-          <a href="" class="btn btn-primary btn-block" ng-click="loadMore()" ng-bind="productsData.nextText"></a>
+        <div class="col-xs-12">
+          <a href="" class="btn btn-primary btn-block" @click.prevent="getProducts">{{data.nextText}}</a>
         </div>
       </div>
     </template>
@@ -35,6 +35,8 @@
 
     data = {};
 
+    loading = false;
+
     products = [];
 
     viewStyle = 'grid';
@@ -42,7 +44,7 @@
     section = {};
 
     mounted () {
-      console.info(this.$route)
+      console.info(this.$route);
       this.getProducts();
     }
 
@@ -53,6 +55,7 @@
     }
 
     async getProducts() {
+      this.loading = true;
       const params = {
         offset: 0,
         configuration_id: 619,
@@ -65,6 +68,7 @@
 
       this.data = data.data;
       this.products = data.data.products;
+      this.loading = false;
     }
   }
 </script>

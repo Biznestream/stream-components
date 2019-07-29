@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="product-filters-popup" ng-class="{'open': current.showFilterPopup}">
+    <div class="product-filters-popup">
 
       <div class="row">
 
@@ -14,7 +14,8 @@
                   @input="onFilter(attribute, $event)"
                   :options="attribute"
                   :values="currentData(attribute.name)"
-                  :value="currentFilter[attribute.name]"></s-product-filter-range>
+                  :value="currentFilter[attribute.name]">
+              </s-product-filter-range>
             </template>
             <template v-else>
 

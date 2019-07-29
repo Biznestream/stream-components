@@ -14,7 +14,7 @@
     </div>
 
     <div class="products-filter" :class="{'collapse': collapsed}">
-    <slot></slot>
+      <slot></slot>
     </div>
   </div>
 </template>
