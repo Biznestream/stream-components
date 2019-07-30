@@ -69,6 +69,7 @@
       this.data = data.data;
       this.products = data.data.products;
       this.loading = false;
+      this.$emit('products', this.products);
     }
   }
 </script>

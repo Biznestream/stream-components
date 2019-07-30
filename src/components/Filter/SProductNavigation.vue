@@ -8,17 +8,17 @@
       </div>
       {% endif %}-->
       <div class="btn-group btn-group btn-group-back" role="group">
-        <a href="" id="productPageBackButton" type="button" class="btn btn-primary">
+        <a href="" id="productPageBackButton" type="button" class="btn btn-primary" @click.prevent="switchProduct('start')">
           <span class="glyphicon glyphicon-backward"></span>
         </a>
       </div>
       <div class="btn-group btn-group btn-group-back" role="group">
-        <a class="btn btn-primary">
+        <a class="btn btn-primary" @click.prevent="switchProduct('prev')">
           <span class="glyphicon glyphicon-chevron-left"></span>
         </a>
       </div>
       <div class="btn-group btn-group" role="group">
-        <a class="btn btn-primary">
+        <a class="btn btn-primary" @click.prevent="switchProduct('next')">
           <span class="glyphicon glyphicon-chevron-right"></span>
         </a>
       </div>
@@ -36,6 +36,25 @@
     }
   })
   class SProductNavigation extends Vue {
+    @Prop(Array) products;
 
+    switchProduct(step){
+      const currentUrl = this.$route.path;
+      const index = this.products.findIndex(el => el.url === currentUrl);
+      let url = '';
+      if(step === 'next' && this.products.length - 1 !== index) {
+        url = this.products[index + 1].url;
+      }
+      if (step === 'prev' && index !== 0){
+        url = this.products[index - 1].url;
+      }
+      if (step === 'start') {
+        url = this.products[0].url;
+      }
+      const { route } = this.$router.resolve(url);
+      const newRoute = { ...route };
+      newRoute.query = this.$route.query;
+      this.$router.push(newRoute);
+    }
   }
 </script>
