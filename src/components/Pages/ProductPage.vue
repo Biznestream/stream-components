@@ -32,7 +32,9 @@
                     </s-product-accordion>
                     <!--<accordion class="accordion-heading-full product-attributes">-->
                     <!--</accordion>-->
-                    <div class="form-widget"></div>
+                    <div class="form-widget">
+                        <s-product-form></s-product-form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,11 +44,12 @@
 </template>
 
 <script>
-	import { Vue, Component } from 'vue-property-decorator';
+	import { Vue, Component, Watch } from 'vue-property-decorator';
 	import SProductAccordion from '../Product/SProductAccordion';
 	import SProductAccordionTab from '../Product/SProductAccordionTab';
 	import SProductThumbnail from '../Product/SProductThumbnail';
 	import SProductImages from '../Product/SProductImages';
+	import SProductForm from '../Product/SProductForm';
 
 	export default @Component({
 		name: "ProductPage",
@@ -54,11 +57,18 @@
 			SProductAccordion,
 			SProductAccordionTab,
 			SProductThumbnail,
-			SProductImages
+			SProductImages,
+			SProductForm
 		}
 	})
 
 	class ProductPage extends Vue {
+
+		@Watch('$route')
+		onRouteChange(newRoute){
+			console.log(newRoute.path);
+		}
+
 		product = {
 			title: 'BYD Gegengewichtstapler ECB16',
 			tabs: [

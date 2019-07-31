@@ -5,6 +5,7 @@ import SProductFilterContainer from './components/Filter/SProductFilterContainer
 import SProductAttribute from './components/Product/SProductAttribute';
 import SProductImages from './components/Product/SProductImages';
 import SProductThumbnail from './components/Product/SProductThumbnail';
+import SProductForm from './components/Product/SProductForm';
 import ProductsSection from './components/ProductsSection';
 import Sticky from 'vue-sticky-directive';
 import ProductPage from './components/Pages/ProductPage';
@@ -20,7 +21,8 @@ export {
   SProductAttribute,
   ProductsSection,
   SProductThumbnail,
-  SProductImages
+  SProductImages,
+  SProductForm
 };
 
 export default function install(Vue) {
@@ -37,6 +39,7 @@ export default function install(Vue) {
   Vue.component('ProductsSection', ProductsSection);
   Vue.component('SProductThumbnail', SProductThumbnail);
   Vue.component('SProductImages', SProductImages);
+  Vue.component('SProductForm', SProductForm);
 }
 install.version = '__VERSION__';
 

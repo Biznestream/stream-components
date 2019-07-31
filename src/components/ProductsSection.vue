@@ -23,13 +23,14 @@
                 </s-product-filter-container>
 
                 <s-product-navigation
-                    :products="products"
+                        :products="products"
                 ></s-product-navigation>
             </div>
 
             <div class="current-product-view list-view-null">
                 <router-view
                         @products="getProducts"
+                        @index="getIndex"
                 ></router-view>
             </div>
         </div>
@@ -39,89 +40,93 @@
 </template>
 
 <script>
-    import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
-    import SProductNavigation from './Filter/SProductNavigation';
-    import { filterToParams, qsToFilter } from '../helpers/common';
+	import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
+	import SProductNavigation from './Filter/SProductNavigation';
+	import { filterToParams, qsToFilter } from '../helpers/common';
 
-    export default @Component({
-        name: "ProductsSection",
-        components: {
-            SProductNavigation
-        }
-    })
-    class ProductsSection extends Vue {
-        filterCollapsed = false;
+	export default @Component({
+		name: "ProductsSection",
+		components: {
+			SProductNavigation
+		}
+	})
+	class ProductsSection extends Vue {
+		filterCollapsed = false;
 
-        products = [];
+		products = [];
 
-        filter = {};
+		filter = {};
 
-        sectionOptions = {};
+		sectionOptions = {};
 
-        currentFilterValues = [];
+		currentFilterValues = [];
 
-        filterCount = 0;
+		filterCount = 0;
 
-        async mounted () {
-            await this.getFilterData();
-            this.onQueryChange();
-        }
+		async mounted () {
+			await this.getFilterData();
+			this.onQueryChange();
+		}
 
-        onFilterUpdate(val, collapse = true) {
-            this.filter = val;
-            this.filterCollapsed = collapse;
-            const query = filterToParams(val, this.sectionOptions.attributes, this.filter, true);
+		onFilterUpdate(val, collapse = true) {
+			this.filter = val;
+			this.filterCollapsed = collapse;
+			const query = filterToParams(val, this.sectionOptions.attributes, this.filter, true);
 
-            const newRoute = { ...this.$route };
-            newRoute.name = 'page';
-            newRoute.query = query;
-            this.$router.push(newRoute);
-        }
+			const newRoute = { ...this.$route };
+			newRoute.name = 'page';
+			newRoute.query = query;
+			this.$router.push(newRoute);
+		}
 
-        getProducts(products){
-            this.products = products;
-        }
+		getProducts(products){
+			this.products = products;
+		}
 
-        getFilterData (val) {
-            if (val) {
-                return axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?', {
-                    params: this.transformObject(val)
-                })
-                    .then(res => {
-                        this.currentFilterValues = res.data.attributes;
-                    })
-                    .catch(error => console.error(error))
-            } else {
-                return axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?offset=0&section=122761238')
-                    .then(res => {
-                        this.sectionOptions = res.data
-                    })
-                    .catch(error => console.error(error))
-            }
-        }
+		getIndex(index){
+			console.log(index);
+		}
 
-        transformObject (obj) {
-            const newKeys = Object.keys(obj).map(item => {
-                return `f${item}`
-            });
-            const oldKeys = Object.keys(obj);
-            let newData = {};
-            for (let i in newKeys) {
-                newData[newKeys[i]] = obj[oldKeys[i]];
-                obj[newKeys[i]] = obj[oldKeys[i]];
-                delete obj[newKeys[i]]
-            }
-            for (const key in newData) {
-                if (Array.isArray(newData[key])) {
-                    newData[key] = newData[key][0] + '-' + newData[key][1]
-                }
-            }
-            return newData;
-        }
+		getFilterData (val) {
+			if (val) {
+				return axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?', {
+					params: this.transformObject(val)
+				})
+					.then(res => {
+						this.currentFilterValues = res.data.attributes;
+					})
+					.catch(error => console.error(error))
+			} else {
+				return axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?offset=0&section=122761238')
+					.then(res => {
+						this.sectionOptions = res.data
+					})
+					.catch(error => console.error(error))
+			}
+		}
 
-        @Watch('$route.query')
-        onQueryChange () {
-            this.filter = qsToFilter(this.$route.query, this.sectionOptions.attributes, {}, true);
-        }
-    }
+		transformObject (obj) {
+			const newKeys = Object.keys(obj).map(item => {
+				return `f${item}`
+			});
+			const oldKeys = Object.keys(obj);
+			let newData = {};
+			for (let i in newKeys) {
+				newData[newKeys[i]] = obj[oldKeys[i]];
+				obj[newKeys[i]] = obj[oldKeys[i]];
+				delete obj[newKeys[i]]
+			}
+			for (const key in newData) {
+				if (Array.isArray(newData[key])) {
+					newData[key] = newData[key][0] + '-' + newData[key][1]
+				}
+			}
+			return newData;
+		}
+
+		@Watch('$route.query')
+		onQueryChange () {
+			this.filter = qsToFilter(this.$route.query, this.sectionOptions.attributes, {}, true);
+		}
+	}
 </script>

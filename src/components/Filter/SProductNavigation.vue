@@ -7,6 +7,9 @@
         {{productPage.productIndex}}/{{productPage.productsCount}}
       </div>
       {% endif %}-->
+      <div class="btn-group btn-group-text">
+        {{counter}}/{{products.length}}
+      </div>
       <div class="btn-group btn-group btn-group-back" role="group">
         <a href="" id="productPageBackButton" type="button" class="btn btn-primary" @click.prevent="switchProduct('start')">
           <span class="glyphicon glyphicon-backward"></span>
@@ -28,7 +31,7 @@
 </template>
 
 <script>
-  import { Vue, Prop, Component, Emit, Watch } from 'vue-property-decorator';
+  import { Vue, Prop, Component } from 'vue-property-decorator';
 
   export default @Component({
     name: "SProductNavigation",
@@ -37,6 +40,8 @@
   })
   class SProductNavigation extends Vue {
     @Prop(Array) products;
+
+    counter = 0;
 
     switchProduct(step){
       const currentUrl = this.$route.path;
