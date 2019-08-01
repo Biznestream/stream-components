@@ -1,17 +1,17 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Component Playground</title>
-    <link rel=stylesheet type=text/css href="https://www.fds-stapler.de/skin/FDS_new">
-    <link rel=stylesheet type=text/css href="./node_modules/vue-image-lightbox/dist/vue-image-lightbox.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Component Playground</title>
+  <link rel=stylesheet type=text/css href="https://www.fds-stapler.de/skin/FDS_new">
+  <link rel=stylesheet type=text/css href="./node_modules/vue-image-lightbox/dist/vue-image-lightbox.min.css">
 </head>
 <body>
 
-    <div id="app">
+<div id="app">
 
   <br/>
   <br/>
@@ -92,105 +92,143 @@
 </script>
 <script src="index.js"></script>
 <script>
+
   const routes = [
     { name: 'page', path: '/', alias: '/:url', component: Vue.component('ProductsPage'), props: (route) => ({ query: route.query }) },
     { name: 'product', path: '/:url/:productName-:productId', component: Vue.component('ProductPage') }
   ];
+
   const router = new VueRouter({
     routes
   });
 
-        var app = new Vue({
-            router,
-            el: '#app',
-            data: {
-                filterCollapsed: false,
-                filter: {},
-                sectionOptions: {},
-                attributes: {},
-                currentFilterValues: [],
-                products: {},
-                filterCount: 0
-            },
-            methods: {
-                getFilterData(val){
-                    if(val){
-                        axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?', {
-                            params: this.transformObject(val)
-                        })
-                            .then(res => {
-                                this.currentFilterValues = res.data.attributes;
-                            })
-                            .catch(error => console.error(error))
+  const store = new Vuex.Store({
+    state: {
+      products: [],
+      loading: false
+    },
+    mutations: {
+      setLoading(state, loading){
+        state.loading = loading
+      },
+      setProducts(state, products){
+        state.products = products
+      }
+    },
+    actions: {
+      async getProductsData({ commit }){
+        const params = {
+          offset: 0,
+          configuration_id: 619,
+          section: 122761238,
+          section_id: 122761238,
+          ...this.query
+        };
+        commit('setLoading', true);
+        const { data } = await axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/products', { params });
+        commit('setProducts', data.data.products);
+        commit('setLoading', false);
+      }
+    },
+    getters: {
+      products: state => state.products,
+      loading: state => state.loading
+    }
+  });
+
+  var app = new Vue({
+    router,
+    store,
+    el: '#app',
+    data: {
+      filterCollapsed: false,
+      filter: {},
+      sectionOptions: {},
+      attributes: {},
+      currentFilterValues: [],
+      products: {},
+      filterCount: 0
+    },
+    methods: {
+      getFilterData(val){
+        if(val){
+          axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?', {
+            params: this.transformObject(val)
+          })
+                  .then(res => {
+                    this.currentFilterValues = res.data.attributes;
+                  })
+                  .catch(error => console.error(error))
+        } else {
+          axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?offset=0&section=122761238')
+                  .then(res => {
+                    this.sectionOptions = res.data
+                  })
+                  .catch(error => console.error(error))
+        }
+      },
+      getProducts(val){
+        if(typeof val === 'number' && val === 0){
+          return
+        }
+        const obj = {
+          offset: 0,
+          section: 122761238,
+          section_id: 122761238
+        };
+        if(val && typeof val === 'object'){
+          const requestParams = Object.assign(this.transformObject(val), obj);
+          axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/products?configuration_id=619', {
+            params: requestParams
+          })
+                  .then(res => this.products = res.data.data)
+                  .catch(error => console.error(error))
+        } else if (!val || val > 0) {
+          val === 1 ? val = 24 : val;
+          !val ? val = 0 : val;
+          axios.get(`https://stapler-mieten.staplercenter-pieckert.de/api/products/?configuration_id=619&offset=${val}&section=122761238&section_id=122761238`)
+                  .then(res => {
+                    if(Object.keys(this.products).length === 0) {
+                      this.products = res.data.data
                     } else {
-                        axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/configuration/619/filter?offset=0&section=122761238')
-                            .then(res => {
-                                this.sectionOptions = res.data
-                            })
-                            .catch(error => console.error(error))
+                      const {nextCount, products} = res.data.data;
+                      this.products.nextCount = nextCount;
+                      this.products.products = this.products.products.concat(products);
                     }
-                },
-                getProducts(val){
-                    if(typeof val === 'number' && val === 0){
-                        return
-                    }
-                    const obj = {
-                      offset: 0,
-                      section: 122761238,
-                      section_id: 122761238
-                    };
-                    if(val && typeof val === 'object'){
-                        const requestParams = Object.assign(this.transformObject(val), obj);
-                        axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/products?configuration_id=619', {
-                            params: requestParams
-                        })
-                            .then(res => this.products = res.data.data)
-                            .catch(error => console.error(error))
-                    } else if (!val || val > 0) {
-                        val === 1 ? val = 24 : val;
-                        !val ? val = 0 : val;
-                        axios.get(`https://stapler-mieten.staplercenter-pieckert.de/api/products/?configuration_id=619&offset=${val}&section=122761238&section_id=122761238`)
-                            .then(res => {
-                                if(Object.keys(this.products).length === 0) {
-                                    this.products = res.data.data
-                                } else {
-                                    const {nextCount, products} = res.data.data;
-                                    this.products.nextCount = nextCount;
-                                    this.products.products = this.products.products.concat(products);
-                                }
-                            })
-                            .catch(error => console.error(error))
-                    }
-                },
-                transformObject(obj){
-                    const newKeys = Object.keys(obj).map(item => {
-                        return `f${item}`
-                    });
-                    const oldKeys = Object.keys(obj);
-                    let newData = {};
-                    for(let i in newKeys){
-                        newData[newKeys[i]] = obj[oldKeys[i]];
-                        obj[newKeys[i]] = obj[oldKeys[i]];
-                        delete obj[newKeys[i]]
-                    }
-                    for(const key in newData){
-                        if (Array.isArray(newData[key])) {
-                            newData[key] = newData[key][0] + '-' + newData[key][1]
-                        }
-                    }
-                    return newData;
-                },
-                async getAttributes(){
-                    const { data } = await axios.get('https://www.fds-stapler.de/api/configuration/1991/filter?offset=0&section=122814641');
-                    this.attributes = data;
-                }
-            },
-            mounted () {
-                this.getFilterData();
-                this.getProducts();
-                this.getAttributes();
-            }
+                  })
+                  .catch(error => console.error(error))
+        }
+      },
+      transformObject(obj){
+        const newKeys = Object.keys(obj).map(item => {
+          return `f${item}`
         });
-    </script>
+        const oldKeys = Object.keys(obj);
+        let newData = {};
+        for(let i in newKeys){
+          newData[newKeys[i]] = obj[oldKeys[i]];
+          obj[newKeys[i]] = obj[oldKeys[i]];
+          delete obj[newKeys[i]]
+        }
+        for(const key in newData){
+          if (Array.isArray(newData[key])) {
+            newData[key] = newData[key][0] + '-' + newData[key][1]
+          }
+        }
+        return newData;
+      },
+      async getAttributes(){
+        const { data } = await axios.get('https://www.fds-stapler.de/api/configuration/1991/filter?offset=0&section=122814641');
+        this.attributes = data;
+      }
+    },
+    mounted () {
+      this.getFilterData();
+      this.getProducts();
+      this.getAttributes();
+      this.$store.dispatch('getProductsData');
+    }
+  });
+</script>
 </body>
 </html>

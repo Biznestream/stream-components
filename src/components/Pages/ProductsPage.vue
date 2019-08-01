@@ -23,7 +23,8 @@
 </template>
 
 <script>
-  import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
+  import { Vue, Prop, Watch } from 'vue-property-decorator';
+  import Component, { namespace } from 'nuxt-class-component';
   import SProduct from '../Product/SProduct';
   import { qsToFilter } from '../../helpers/common';
 
@@ -33,14 +34,11 @@
       SProduct
     }
   })
+
   class ProductsPages extends Vue {
     @Prop() query;
 
     data = {};
-
-    loading = false;
-
-    products = [];
 
     viewStyle = 'grid';
 
@@ -48,7 +46,15 @@
 
     mounted () {
       console.info(this.$route);
-      this.getProducts();
+      //this.getProducts();
+    }
+
+    get products(){
+    	return this.$store.getters.products
+    }
+
+    get loading(){
+    	return this.$store.getters.loading
     }
 
     @Watch('query')
@@ -58,21 +64,7 @@
     }
 
     async getProducts() {
-      this.loading = true;
-      const params = {
-        offset: 0,
-        configuration_id: 619,
-        section: 122761238,
-        section_id: 122761238,
-        ...this.query
-      };
-
-      const { data } = await axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/products', { params });
-
-      this.data = data.data;
-      this.products = data.data.products;
-      this.loading = false;
-      this.$emit('products', this.products);
+      await this.$store.dispatch('getProducts');
     }
   }
 </script>

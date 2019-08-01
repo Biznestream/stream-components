@@ -17,8 +17,7 @@
                     >
                     </s-product-images>
                     <s-product-accordion v-scroll-to="{
-                        el: '#filter',
-                        offset: 170
+                        el: '#filter'
                     }">
                         <template slot="tab" slot-scope="{ toggle, activeIndex }">
                             <s-product-accordion-tab

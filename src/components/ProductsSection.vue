@@ -2,7 +2,7 @@
 
     <div class="section product-section">
 
-        <div class="product-filter-outer container" sticky-container id="filter">
+        <div class="product-filter-outer container" sticky-container>
 
             <div v-sticky>
 
@@ -22,16 +22,11 @@
 
                 </s-product-filter-container>
 
-                <s-product-navigation
-                        :products="products"
-                ></s-product-navigation>
+                <s-product-navigation></s-product-navigation>
             </div>
 
             <div class="current-product-view list-view-null">
-                <router-view
-                        @products="getProducts"
-                        @index="getIndex"
-                ></router-view>
+                <router-view></router-view>
             </div>
         </div>
 
@@ -52,8 +47,6 @@
 	})
 	class ProductsSection extends Vue {
 		filterCollapsed = false;
-
-		products = [];
 
 		filter = {};
 
@@ -77,14 +70,6 @@
 			newRoute.name = 'page';
 			newRoute.query = query;
 			this.$router.push(newRoute);
-		}
-
-		getProducts(products){
-			this.products = products;
-		}
-
-		getIndex(index){
-			console.log(index);
 		}
 
 		getFilterData (val) {

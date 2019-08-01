@@ -3,7 +3,9 @@
     <div class="panel panel-default" :class="{open: active}">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a href="" class="accordion-toggle" @click.prevent="toggleOpen" accordion-transclude="heading"><span>{{tab.title}}</span></a>
+                <a href="" class="accordion-toggle" @click.prevent="toggleOpen" accordion-transclude="heading">
+                    <span>{{tab.title}}</span>
+                </a>
             </h4>
         </div>
         <transition
@@ -11,6 +13,7 @@
                 @enter="enter"
                 @after-enter="afterEnter"
                 @leave="leave"
+                @after-leave="afterLeave"
         >
             <div ref="panel" v-if="active" class="panel-collapse collapse" :class="{in: active}">
                 <div class="panel-body">
@@ -30,64 +33,64 @@
 </template>
 
 <script>
-    import { Vue, Prop, Component } from 'vue-property-decorator';
+	import { Vue, Prop, Component } from 'vue-property-decorator';
 
-    export default @Component({
-        name: "SProductAccordion",
-        components: {
-        }
-    })
+	export default @Component({
+		name: "SProductAccordion",
+		components: {
+		}
+	})
 
-    class SProductAccordion extends Vue {
-        @Prop() tab;
-        @Prop() active;
+	class SProductAccordion extends Vue {
+		@Prop() tab;
+		@Prop() active;
 
-        toggleOpen(){
-            this.$emit('toggleTab');
-        }
+		toggleOpen(){
+			this.$emit('toggleTab');
+		}
 
-        mounted(){
+		enter(element) {
+			const width = getComputedStyle(element).width;
 
-        }
+			element.style.width = width;
+			element.style.position = 'absolute';
+			element.style.visibility = 'hidden';
+			element.style.height = 'auto';
 
-        enter(element) {
-            const width = getComputedStyle(element).width;
+			const height = getComputedStyle(element).height;
 
-            element.style.width = width;
-            element.style.position = 'absolute';
-            element.style.visibility = 'hidden';
-            element.style.height = 'auto';
+			element.style.width = null;
+			element.style.position = null;
+			element.style.visibility = null;
+			element.style.height = 0;
 
-            const height = getComputedStyle(element).height;
+			getComputedStyle(element).height;
 
-            element.style.width = null;
-            element.style.position = null;
-            element.style.visibility = null;
-            element.style.height = 0;
+			setTimeout(() => {
+				element.style.height = height;
+			});
+		}
 
-            getComputedStyle(element).height;
+		afterEnter(element) {
+			element.style.height = 'auto';
+		}
 
-            setTimeout(() => {
-                element.style.height = height;
-            });
-        }
+		leave(element) {
+			const height = getComputedStyle(element).height;
 
-        afterEnter(element) {
-            element.style.height = 'auto';
-        }
+			element.style.height = height;
 
-        leave(element) {
-            const height = getComputedStyle(element).height;
+			getComputedStyle(element).height;
 
-            element.style.height = height;
+			setTimeout(() => {
+				element.style.height = 0;
+			});
+		}
 
-            getComputedStyle(element).height;
-
-            setTimeout(() => {
-                element.style.height = 0;
-            });
-        }
-    }
+		afterLeave(){
+			//this.toggleOpen();
+		}
+	}
 </script>
 
 <style lang="scss" scoped>
