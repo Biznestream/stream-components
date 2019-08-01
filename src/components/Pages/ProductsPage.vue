@@ -4,7 +4,10 @@
     <template v-if="viewStyle != 'table'">
       <div>
         <template v-for="product, index in products">
-          <s-product :product="product" :key="index"></s-product>
+          <s-product
+                  :product="product"
+                  :key="index"
+          ></s-product>
         </template>
         <div class="col-xs-12 text-center" v-if="loading">
           Loading data...
