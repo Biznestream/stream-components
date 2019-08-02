@@ -1,5 +1,5 @@
 <template>
-<div class="product-item">
+<div class="product-item" data-test="productCard">
   <span @click="openProduct(product.url)" style="cursor: pointer" class="thumbnail">
     <div class="product-image img-overlay img-overlay-container">
       <div class="overlay main-btn">

@@ -3,7 +3,7 @@
 
     <template v-if="viewStyle != 'table'">
       <div>
-        <template v-for="product, index in products">
+        <template v-for="product, index in products.products">
           <s-product
                   :product="product"
                   :key="index"
@@ -15,7 +15,7 @@
           <br/>
         </div>
         <div class="col-xs-12">
-          <a href="" class="btn btn-primary btn-block" @click.prevent="getProducts">{{data.nextText}}</a>
+          <a href="" class="btn btn-primary btn-block" @click.prevent="getProducts">{{products.nextText}}</a>
         </div>
       </div>
     </template>

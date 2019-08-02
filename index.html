@@ -126,7 +126,7 @@
         };
         commit('setLoading', true);
         const { data } = await axios.get('https://stapler-mieten.staplercenter-pieckert.de/api/products', { params });
-        commit('setProducts', data.data.products);
+        commit('setProducts', data.data);
         commit('setLoading', false);
       }
     },

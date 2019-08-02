@@ -32,12 +32,14 @@
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.2.1",
-    "webpack-plugin-replace": "^1.2.0"
+    "webpack-plugin-replace": "^1.2.0",
+    "testcafe": "^0.23.3"
   },
   "scripts": {
     "prepublish": "npm run build",
     "dev": "webpack-dev-server",
-    "build": "NODE_ENV=production webpack"
+    "build": "NODE_ENV=production webpack",
+    "test-e2e": "testcafe chrome:headless ui/**/*.e2e.js"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^12.1.0",

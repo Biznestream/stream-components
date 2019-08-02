@@ -1,5 +1,5 @@
 <template>
-  <div class="accordion-heading-full product-attributes">
+  <div class="accordion-heading-full product-attributes" ref="accordion">
     <div class="panel-group">
       <slot name="tab" :toggle="toggleTab" :activeIndex="activeIndex"></slot>
     </div>

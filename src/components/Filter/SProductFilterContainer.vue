@@ -1,5 +1,5 @@
 <template>
-  <div class="filter-container">
+  <div class="filter-container" id="filter">
 
     <div class="filter-header" :class="{'has-filters': hasActiveFilters}" @click.prevent="toggleCollapse">
       <a href="" class="collapsed-button btn btn-primary">

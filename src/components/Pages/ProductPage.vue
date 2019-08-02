@@ -16,9 +16,7 @@
                             @selectedImage="onImageSelect"
                     >
                     </s-product-images>
-                    <s-product-accordion v-scroll-to="{
-                        el: '#filter'
-                    }">
+                    <s-product-accordion>
                         <template slot="tab" slot-scope="{ toggle, activeIndex }">
                             <s-product-accordion-tab
                                     :tab="tab"
@@ -65,7 +63,7 @@
 
 		@Watch('$route')
 		onRouteChange(newRoute){
-			console.log(newRoute.path);
+			//console.log(newRoute.path);
 		}
 
 		product = {
