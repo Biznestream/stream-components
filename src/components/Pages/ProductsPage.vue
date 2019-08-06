@@ -60,11 +60,6 @@
     @Watch('query')
     onQueryChange () {
       console.info('watch', this.query);
-      this.getProducts();
-    }
-
-    async getProducts() {
-      await this.$store.dispatch('getProducts');
     }
   }
 </script>

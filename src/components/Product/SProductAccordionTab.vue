@@ -1,6 +1,6 @@
 <template>
 
-    <div class="panel panel-default" :class="{open: active}">
+    <div ref="panel" class="panel panel-default" :class="{open: active}">
         <div class="panel-heading">
             <h4 class="panel-title">
                 <a href="" class="accordion-toggle" @click.prevent="toggleOpen" accordion-transclude="heading">
@@ -13,9 +13,8 @@
                 @enter="enter"
                 @after-enter="afterEnter"
                 @leave="leave"
-                @after-leave="afterLeave"
         >
-            <div ref="panel" v-if="active" class="panel-collapse collapse" :class="{in: active}">
+            <div v-if="active" class="panel-collapse collapse" :class="{in: active}">
                 <div class="panel-body">
                     <div class="row dl-leaders">
                         <s-product-attribute
@@ -49,23 +48,35 @@
 			this.$emit('toggleTab');
 		}
 
-		enter(element) {
-			const width = getComputedStyle(element).width;
+		mounted(){
+			const target = document.querySelector('.panel-collapse');
+			target.addEventListener("webkitTransitionEnd", () => {
+				alert('True')
+			})
+		}
 
-			element.style.width = width;
+		windowScroll(){
+			let top = 230;
+			const barHeight = document.querySelector('.list-product-images').offsetHeight;
+			top += barHeight;
+			window.scrollTo({
+				'behavior': 'smooth',
+				'left': 0,
+				'top': top
+			});
+		}
+
+		enter(element) {
+			element.style.width = getComputedStyle(element).width;
 			element.style.position = 'absolute';
 			element.style.visibility = 'hidden';
 			element.style.height = 'auto';
-
 			const height = getComputedStyle(element).height;
-
 			element.style.width = null;
 			element.style.position = null;
 			element.style.visibility = null;
 			element.style.height = 0;
-
 			getComputedStyle(element).height;
-
 			setTimeout(() => {
 				element.style.height = height;
 			});
@@ -76,19 +87,11 @@
 		}
 
 		leave(element) {
-			const height = getComputedStyle(element).height;
-
-			element.style.height = height;
-
+			element.style.height = getComputedStyle(element).height;
 			getComputedStyle(element).height;
-
 			setTimeout(() => {
 				element.style.height = 0;
 			});
-		}
-
-		afterLeave(){
-			//this.toggleOpen();
 		}
 	}
 </script>
