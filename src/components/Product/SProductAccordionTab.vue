@@ -13,6 +13,7 @@
                 @enter="enter"
                 @after-enter="afterEnter"
                 @leave="leave"
+                @after-leave="afterLeave"
         >
             <div v-if="active" class="panel-collapse collapse" :class="{in: active}">
                 <div class="panel-body">
@@ -84,6 +85,7 @@
 
 		afterEnter(element) {
 			element.style.height = 'auto';
+			this.windowScroll();
 		}
 
 		leave(element) {
@@ -92,6 +94,10 @@
 			setTimeout(() => {
 				element.style.height = 0;
 			});
+		}
+
+		afterLeave(element){
+			this.windowScroll();
 		}
 	}
 </script>
