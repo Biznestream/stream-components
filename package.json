@@ -21,7 +21,7 @@
     "nuxt-class-component": "^1.2.1",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
-    "testcafe": "^0.23.3",
+    "testcafe": "^2.2.0",
     "url-loader": "^1.1.2",
     "vue": "^2.6.8",
     "vue-loader": "^15.6.4",
